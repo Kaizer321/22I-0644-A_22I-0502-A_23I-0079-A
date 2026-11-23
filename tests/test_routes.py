@@ -66,3 +66,76 @@ def test_random_graphs():
 def test_directed_asymmetry():
     adj = build_adj(2, [(0, 0, 1, 5)], [0, 3])
     assert dijkstra(2, adj, 0)[0][1] == 8 and dijkstra(2, adj, 1)[0][0] == 5
+
+
+def test_blocked_and_self():
+    adj = build_adj(2, [(7, 0, 1, 5)], [0, 0], blocked=[7])
+    d, p = dijkstra(2, adj, 0)
+    assert d[1] is None and path(p, 0, 1) is None and path(p, 0, 0) == []
+
+
+def test_route_cost_rejects_bad_road():
+    with pytest.raises(ValueError):
+        route_cost(build_adj(2, [(0, 0, 1, 5)], [0, 0]), 0, [9])
+
+
+def test_bfs_tie_rule():
+    roads = [(0, 0, 2, 1), (1, 0, 1, 1), (2, 2, 3, 1), (3, 1, 3, 1)]
+    adj = build_adj(4, roads, [0] * 4)
+    _, par = bfs_fewest(4, adj, 0)
+    assert path(par, 0, 3) == [1, 3]  # via node 1, not 2
+
+
+def test_validation_rejects_endpoint_ge_V():
+    locs = [{"loc_id": i, "penalty": 0} for i in range(3)]
+    with pytest.raises(InvalidInput):
+        check_network("c", locs, [{"road_no": 0, "u": 0, "v": 3, "minutes": 1}], [], [1])
+
+
+def run_master(ids, bf):
+    t = loader.load(ids, ["cases", "locations", "roads"])
+    trap = []
+    for c in ids:
+        cs, locs, rds = t["cases"][c][0], t["locations"][c], t["roads"][c]
+        V, pen = len(locs), [r["penalty"] for r in locs]
+        adj = build_adj(V, [(r["road_no"], r["u"], r["v"], r["minutes"]) for r in rds], pen)
+        dd, dp = dijkstra(V, adj, 0)
+        if bf:
+            assert dd == bellman_ford(V, adj, 0)[0]
+        _, bp = bfs_fewest(V, adj, 0)
+        ratios = []
+        for k in range(3):
+            tg = cs[f"target_{k}"]
+            if dd[tg] is None:
+                continue
+            bc = route_cost(adj, 0, path(bp, 0, tg))
+            assert dd[tg] <= bc
+            ratios.append(2 * bc >= 3 * dd[tg])
+        if cs["case_no"] == 48:
+            trap.append(any(ratios))
+    return trap
+
+
+def test_master_S():
+    run_master(loader.sample("S"), True)
+
+
+def test_master_trap_48():
+    cases = {c["case_id"]: c["case_no"] for c in loader.read_cases()}
+    ids = [c for c in loader.sample("X") if cases[c] == 48]
+    assert ids
+    assert all(run_master(ids, False))
+
+
+def test_synth_timing(capsys):
+    V, roads, pen = loader.synthetic_network(4000, "69-synth-4000")
+    adj = build_adj(V, roads, pen)
+    res = []
+    for f in (dijkstra, bellman_ford):
+        ops, t0 = {}, time.perf_counter()
+        d, _ = f(V, adj, 0, ops)
+        res.append((d, f.__name__, time.perf_counter() - t0, ops))
+    assert res[0][0] == res[1][0]
+    with capsys.disabled():
+        for _, n, t, o in res:
+            print(f"\n{n}: {t:.3f}s {o}")
