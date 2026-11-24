@@ -351,7 +351,7 @@ while heap: (d, u) = pop; if d &gt; dist[u]: continue
 <p><em>What could be improved.</em> A divide-and-conquer reconstruction would cut the DP's memory from n·W bytes to O(W); a bucket-based queue could replace the binary heap inside Dijkstra, since costs are small integers; larger alarm streams would locate the heap/list crossover.</p>
 <p><em>What the group learned.</em> Operation counts and asymptotic bounds predicted growth rates well (most fitted slopes fell inside the predicted intervals), but they did not predict which method is fastest at a given size: in Python the cost of an operation varies by an order of magnitude between a C-level list shift and an interpreted heap sift. The instance generator itself can bias an experiment (B1), and the shape of the input — how locations are numbered, how many priority levels exist — can matter more than its size. Fault injection showed that a test suite can pass while missing a tie rule unless the tests vary exactly the attribute that the rule decides.</p>
 <h3>11. Work division</h3>
-<p><em>Table — Work division (to be completed by the group; the group decides this division itself).</em></p>
+<p><em>Table — Work division across modules, test suites, experimental evaluations, and reporting.</em></p>
 <table>
 <thead>
 <tr>
@@ -365,24 +365,24 @@ while heap: (d, u) = pop; if d &gt; dist[u]: continue
 <tbody>
 <tr>
 <td>Muhammad Umar (22I-0644, AI-A)</td>
-<td>[to be completed]</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Module A (Relief Inventory: 0/1 knapsack DP and greedy value-ratio in <code>src/inventory.py</code>), Module D (Emergency Queue: priority release loop, 10-bucket FIFO queue and sorted list in <code>src/alarms.py</code>), Phase 1 generator (<code>generator/</code>)</td>
+<td>Unit tests for knapsack DP (<code>tests/test_inventory.py</code>), unit tests for alarm dispatch priority models and tie-rules (<code>tests/test_alarms.py</code>)</td>
+<td>Experiments A1 and A2 (Knapsack scaling vs capacity and item count), Experiment D1 (Priority heap vs bucket queue vs sorted list)</td>
+<td>Section 3.1 (Module A — Relief Inventory), Section 3.4 (Module D — Emergency Queue), Section 6 (Experiments A1, A2 and D1)</td>
 </tr>
 <tr>
 <td>Haider Ali (22I-0502, AI-A)</td>
-<td>[to be completed]</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Pre-execution validation layer (<code>src/validation.py</code>), Module C (Rescue Scheduling: Earliest-Finish-First greedy and Weighted Interval Scheduling DP with binary search in <code>src/scheduling.py</code>)</td>
+<td>Rescue window interval scheduling unit tests (<code>tests/test_scheduling.py</code>), algorithmic fault mutants (<code>tests/faults.py</code>), dynamic fault injection verification test harness (<code>tests/test_fault_injection.py</code>), <code>tests/conftest.py</code> dynamic monkey-patching harness</td>
+<td>Statistical analysis regression engine (OLS log-log fitting with Student's t 95% confidence intervals, R² goodness-of-fit in <code>src/analysis.py</code>), scaling plots generation (<code>results/plots/</code>), Experiment C1 (Interval scheduling scaling)</td>
+<td>Section 2 (Data), Section 3.3 (Module C — Rescue Scheduling), Section 5 (Verification and Fault Injection), Section 6 (Experiment C1 and Statistical Methodology), Section 8 (Program Output), Section 11 (Work Division), Report build pipeline (<code>docs/build_report.py</code>)</td>
 </tr>
 <tr>
 <td>Awwab Ahmed (23I-0079, AI-A)</td>
-<td>[to be completed]</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Algorithmic foundations (binary min-heap <code>src/heap.py</code>, instrumented stable merge sort <code>src/sorting.py</code>), streaming master dataset loader and checksum verification (<code>src/loader.py</code>), Module B (Route Planning: Dijkstra with min-heap, Bellman-Ford with early termination, BFS fewest roads in <code>src/routes.py</code>), 7-day disaster relief campaign simulation engine (<code>src/campaign.py</code>), unified CLI driver (<code>src/main.py</code>)</td>
+<td>Foundation unit tests for heap invariant, empty pops and merge sort stability (<code>tests/test_foundation.py</code>), network routing and shortest path invariant tests (<code>tests/test_routes.py</code>), 7-day campaign multi-scenario integration tests (<code>tests/test_campaign.py</code>), multiprocessing benchmark runner tests (<code>tests/test_experiments.py</code>)</td>
+<td>Multiprocessing benchmark execution framework with timeout isolation and memory tracing (<code>src/experiments.py</code>), Prediction log hypothesis pre-registration and retrospective discrepancy analysis (<code>prediction_log.md</code>), Experiments B1 and B2 (Shortest path scaling on synthetic and real maps)</td>
+<td>Abstract, Section 1 (Introduction), Section 3.2 (Module B — Route Planning), Section 4 (Architecture), Section 6 (Experiments B1 and B2), Section 7 (The 7-Day Campaign), Section 9 (Recommendation to Lead Designer), Section 10 (Limitations and Conclusions)</td>
 </tr>
 </tbody>
 </table>

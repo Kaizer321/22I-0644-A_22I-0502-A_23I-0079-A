@@ -2,3 +2,7 @@ Master Dataset/
 .venv/
 __pycache__/
 *.py[cod]
+.pytest_cache/
+*.zip
+_temp_cache/
+22I-0644-A_22I-0502-A_23I-0079-A/
