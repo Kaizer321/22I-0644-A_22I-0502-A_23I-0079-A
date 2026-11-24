@@ -1,6 +1,8 @@
 from collections import deque
+from itertools import pairwise
 
 from .heap import MinHeap, inc
+from .sorting import merge_sort
 
 
 def _run(alarms, ops, push, pop):
@@ -42,7 +44,10 @@ def release_sorted_list(alarms, ops=None):
 
 
 def release_buckets(alarms, ops=None):
-    q = [deque() for _ in range(11)]  # index = priority; input order is already (tick, id)
+    # FIFO preserves the urgency tie rule once arrivals are ordered by tick and id.
+    if any(a[1] == b[1] and a[0] > b[0] for a, b in pairwise(alarms)):
+        alarms = merge_sort(alarms, lambda a: (a[1], a[0]), ops, prefix="pre_")
+    q = [deque() for _ in range(11)]
 
     def push(x):
         inc(ops, "bucket")

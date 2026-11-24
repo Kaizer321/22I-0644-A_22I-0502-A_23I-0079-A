@@ -6,7 +6,9 @@ Rules (rulebook 6.3, R-05): each entry is written and **committed before** its e
 
 ---
 
-## Round 1 — 2026-11-24, before any experiment run
+## Round 1
+
+The prediction entry is first visible in commit `0d0fefb`, whose recorded timestamp is **2026-11-21 09:30:00 UTC+05:00**. This is the commit timestamp. The exact time the entry was written is unavailable. The formal run started on **2026-11-24 at 01:29:36 local time**, as recorded in the committed `results/environment.txt`. The smoke timings disclosed above were already known.
 
 ### A1 — knapsack DP vs ratio greedy, vary n (W = ⌊0.4 · total weight⌋)
 - **Expected winner:** greedy is faster at every size; DP is exact.
@@ -40,7 +42,7 @@ Rules (rulebook 6.3, R-05): each entry is written and **committed before** its e
 - **Prediction:** 0 failed constraint checks; on `4-47` (trap 47) the greedy load is **≤ 60%** of the DP load on every loading day where the trap crates are reachable; on `2-48` (trap 48) the fewest-roads route costs **≥ 1.5×** Dijkstra's on at least one day; at least one skipped trip on Day 6 or 7 across the five cases.
 
 ## After Round 1 — what we got wrong and why
-Run: 2026-11-24, after commit 2b43a69 (this log). 113 points, all `OK` (no DNF, no FAIL). Numbers from `results/results.csv` and `results/fits.csv`; solution-quality ratios from `results/quality_check.txt`. ✔ = within the stated tolerance, ✘ = outside.
+Run: **2026-11-24 01:29:36 local time** (see `results/environment.txt`). 113 points, all `OK` (no DNF, no FAIL). Numbers from `results/results.csv` and `results/fits.csv`; solution-quality ratios from `results/quality_check.txt`. ✔ = within the stated tolerance, ✘ = outside.
 
 | Exp | Prediction | Measured | |
 |---|---|---|---|

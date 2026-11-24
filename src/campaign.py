@@ -36,6 +36,7 @@ def timed(f, *a):
 
 def alarm_check(al, rel):
     # independent of module D: per-priority FIFOs of admitted alarms, the head of the top non-empty one must be released
+    al = sorted(al, key=lambda a: (a[1], a[0]))
     info = {a[0]: a for a in al}
     if sorted(x[1] for x in rel) != sorted(info):
         return "not every alarm released exactly once"
@@ -114,6 +115,7 @@ def run_case(cid, d):
             checks += [("route", walk(path) == dist[dst] and walk(fewest) == fcost, "path invalid or cost does not re-sum"),
                        ("bellman_ford == dijkstra", bf[dst] == dist[dst], f"{bf[dst]} != {dist[dst]}")]
             p(f"route: {len(path)} roads, cost {dist[dst]}")
+            p(f"  selected road IDs (HQ to destination): {path}")
             p(f"  baseline: bellman_ford cost {bf[dst]}; fewest-roads route {len(fewest)} roads, cost {fcost} (gap {fcost - dist[dst]})")
             p(f"  time/ops: dijkstra {td * 1e3:.2f}ms {od}; bellman_ford {tf * 1e3:.2f}ms {of}; bfs {tb * 1e3:.2f}ms {ob}")
             if day < 7:
@@ -128,6 +130,7 @@ def run_case(cid, d):
                 checks.append(("load", load_ok(dv, di) and load_ok(gv, gi), "weight over capacity, duplicate id or value does not re-sum"))
                 row.update(load_value_dp=dv, load_value_greedy=gv, load_weight_dp=sum(cm[i][0] for i in di))
                 p(f"load: {len(di)} crates, value {dv}, weight {row['load_weight_dp']}/{cap}")
+                p(f"  selected crate IDs (knapsack DP): {di}")
                 p(f"  baseline: ratio_greedy value {gv} (gap {dv - gv})")
                 p(f"  time/ops: knapsack_dp {td * 1e3:.2f}ms {od}; ratio_greedy {tg * 1e3:.2f}ms {og}")
             else:
@@ -150,6 +153,8 @@ def run_case(cid, d):
                        "overlap, unavailable window or value does not re-sum"))
         row.update(windows_count=len(ec), windows_value_dp=wv, windows_value_greedy=gv)
         p(f"windows: {len(ec)} by earliest finish, DP value {wv} ({len(wi)} windows)")
+        p(f"  selected rescue-window IDs (earliest finish): {ec}")
+        p(f"  selected rescue-window IDs (weighted DP): {wi}")
         p(f"  baseline: value_greedy value {gv} (gap {wv - gv})")
         p(f"  time/ops: eff_count {te * 1e3:.2f}ms {oe}; weighted_dp {tw * 1e3:.2f}ms {ow}; value_greedy {tg * 1e3:.2f}ms {og}")
         rel, th, oh = timed(al_.release_heap, al)

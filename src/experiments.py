@@ -170,6 +170,9 @@ def measure(fn, args, runs):
         out["mem_bytes"] = m["mem"]
     else:
         out["note"] += f";mem:{st}"
+        if st == "FAIL":
+            out["status"] = "FAIL"
+            out["note"] += f": {m}"
     return out
 
 
@@ -229,8 +232,12 @@ def main(argv=None):
     out = ROOT / "smoke" if a.smoke else ROOT
     out.mkdir(parents=True, exist_ok=True)
     write_environment(out)
+    failed = False
     for name in a.exps or EXPS:
-        write_rows(out / "results.csv", {name}, run_experiment(name, a.smoke))  # per experiment: a crash keeps finished ones
+        rows = run_experiment(name, a.smoke)
+        write_rows(out / "results.csv", {name}, rows)
+        failed |= any(row["status"] == "FAIL" for row in rows)
+    return int(failed)
 
 
 if __name__ == "__main__":

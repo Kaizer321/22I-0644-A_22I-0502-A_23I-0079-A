@@ -5,7 +5,7 @@ Group 69: Muhammad Umar (22I-0644), Haider Ali (22I-0502), Awwab Ahmed (23I-0079
 
 ## Status
 - Iteration 1 (data and algorithm selection): complete.
-- Iteration 2 (implementation and evaluation): first draft complete — implementation, 49 tests, campaign, experiment round 1 (113 points, all OK) and analysis. Under review by the group.
+- Iteration 2 (implementation and evaluation): implementation, campaign, experiment round 1 (113 points, all OK), and analysis. The current test suite has 53 tests.
 
 ## Setup
 Python 3.11.6.
@@ -88,7 +88,7 @@ Hardware and software: AMD Ryzen 7 7445HS, 15.2 GB RAM, Windows 11, Python 3.11.
 Days, events, destinations and closures follow rulebook 6.4. "Wave i" is the i-th wave of the case in increasing `wave_no` order, (i mod number of waves) — 1,862 master cases number their waves from 1, not 0. Clash Q-1: Day 2 road minutes are **rounded up**, ⌈1.5·m⌉, while crate values use floor(base · multiplier) (the multipliers 2 and 3 are integers, so values are exact). Added alarms (Day 2 priority 9, Day 5 priority 10) arrive at tick 0 with id = max id + 1. A destination that is unreachable skips the trip (no route, no loading) — never an error; windows and alarms are processed every day. Every day prints the constraints checked (route uses open roads and re-sums; load ≤ capacity; windows compatible and available; Bellman–Ford = Dijkstra; the three queues give the same order; alarm order valid).
 
 ## Tests
-`python -m pytest tests -q` — 49 tests: unit and boundary tests per module, brute force on random small inputs, the 204 tier-S claims of our sample (cargo, window count, window value), Dijkstra = Bellman–Ford = Floyd–Warshall on random maps, trap 47 (greedy ≤ 60% of DP) and trap 48 (fewest-roads ≥ 1.5 × cheapest) on our X sample, invariants, the campaign end to end, and fault injection.
+`python -m pytest tests -q` — 53 tests: unit and boundary tests per module, brute force on random small inputs, the 204 tier-S claims of our sample (cargo, window count, window value), Dijkstra = Bellman–Ford = Floyd–Warshall on random maps, trap 47 (greedy ≤ 60% of DP) and trap 48 (fewest-roads ≥ 1.5 × cheapest) on our X sample, invariants, the campaign end to end, fault injection, and benchmark exit status.
 **Fault injection** (`results/fault_injection.txt`): four deliberate bugs are injected from `tests/faults.py` (production code untouched) and the suite must fail on each — touching windows treated as incompatible, the alarm key ignoring the tick, `build_adj` ignoring blocked roads, and a knapsack that reuses items. All four are caught. Lesson: the tick tie-rule fault was **not** caught by the original alarm tests, because their alarm ids always increased with tick; a test with ids out of tick order was added.
 
 ## Recommendation (Problem N)
@@ -111,8 +111,8 @@ Days, events, destinations and closures follow rulebook 6.4. "Wave i" is the i-t
 
 **D — Emergency queue: ship the bucket queue (ten FIFO queues).**
 - *Evidence:* D1 — fastest at all eight sizes: 0.059 s at m = 64,000 against 0.258 s (sorted list) and 0.472 s (binary heap); all three give identical release orders (checked in every run and every campaign day). Theory said the heap beats the sorted list; measurement says the opposite in this range (heap/list 2.73 → 1.83 from m = 1,000 to 64,000), because the list's shifts are fast C memory moves.
-- *Assumption:* priorities are a small fixed set of integers (1–10) and alarms arrive in (tick, id) order, so FIFO order inside a priority is the tie rule.
-- *Wrong when:* priorities become fine-grained (e.g. a continuous urgency score) or alarms arrive out of order. *Measure:* the number of distinct priority levels and an order check of the incoming stream; if either fails, fall back to the binary heap (correct for any key).
+- *Assumption:* priorities are integers from 1 to 10 and arrival ticks are nondecreasing. Within a tick, the bucket queue restores ID order when needed before dispatching alarms.
+- *Wrong when:* priorities become fine-grained (e.g. a continuous urgency score), or ID reordering makes preprocessing expensive enough to erase the bucket queue's timing advantage. *Measure:* check the priority range and benchmark representative batches with same-tick ID inversions against the heap.
 
 **Failure modes of the whole engine that worry us most (ranked).**
 1. **Destinations cut off by closures.** 12 of 35 campaign trips were skipped because no route existed; the corridor case 2-40 lost 6 of 7 days. No routing algorithm can deliver to a cut-off shelter; the engine reports it, but relief does not arrive. *Watch:* the share of skipped trips per week.

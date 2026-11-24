@@ -2,108 +2,134 @@
 --- Day 1: Normal
 input: destination 486, blocked roads 0, crates 13, windows 2131 available of 2664, alarms 3256; changes: none
 route: 8 roads, cost 357
+  selected road IDs (HQ to destination): [8, 105, 104, 54, 53, 205, 207, 736]
   baseline: bellman_ford cost 357; fewest-roads route 8 roads, cost 357 (gap 0)
-  time/ops: dijkstra 4.26ms {'pq': 1478, 'move': 4616, 'nodes': 710, 'edges': 1796, 'relax': 1796, 'cmp': 6952}; bellman_ford 4.81ms {'rounds': 9, 'edges': 11893, 'relax': 11893}; bfs 0.60ms {'nodes': 710, 'edges': 1796}
+  time/ops: dijkstra 5.93ms {'pq': 1478, 'move': 4616, 'nodes': 710, 'edges': 1796, 'relax': 1796, 'cmp': 6952}; bellman_ford 6.84ms {'rounds': 9, 'edges': 11893, 'relax': 11893}; bfs 0.75ms {'nodes': 710, 'edges': 1796}
 load: 2 crates, value 198, weight 40/40
+  selected crate IDs (knapsack DP): [3, 6]
   baseline: ratio_greedy value 113 (gap 85)
-  time/ops: knapsack_dp 0.11ms {'items': 13, 'cells': 292}; ratio_greedy 0.22ms {'cmp': 35, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.13ms {'items': 13, 'cells': 292}; ratio_greedy 0.30ms {'cmp': 35, 'move': 49, 'items': 13}
 windows: 88 by earliest finish, DP value 2019 (73 windows)
+  selected rescue-window IDs (earliest finish): [232, 22, 418, 2127, 921, 1667, 1313, 150, 143, 1698, 648, 2362, 125, 1333, 160, 387, 261, 2486, 1492, 1610, 867, 2021, 2067, 2632, 121, 342, 1763, 1092, 2201, 298, 1650, 556, 1846, 487, 77, 2086, 2048, 683, 947, 1773, 2403, 1473, 365, 1836, 2567, 2090, 913, 2656, 973, 15, 2653, 2593, 1718, 698, 866, 1332, 722, 107, 755, 1540, 1527, 875, 1242, 1571, 2610, 303, 1506, 1691, 982, 693, 1678, 543, 906, 1875, 1668, 2037, 1785, 1845, 358, 483, 2190, 1781, 971, 1443, 1223, 2268, 626, 1886]
+  selected rescue-window IDs (weighted DP): [1262, 2178, 418, 2127, 2046, 2662, 1031, 1073, 143, 1698, 1952, 2362, 125, 1333, 160, 387, 261, 447, 1492, 1610, 867, 2021, 1482, 251, 342, 1763, 2511, 298, 1650, 556, 1846, 487, 672, 271, 2432, 947, 443, 2230, 2395, 862, 2126, 198, 837, 2297, 1552, 698, 1762, 1598, 2282, 755, 1540, 883, 2563, 1857, 303, 1282, 1041, 693, 820, 2243, 1875, 1668, 2037, 782, 1845, 358, 871, 1838, 1320, 793, 2268, 626, 1886]
   baseline: value_greedy value 415 (gap 1604)
-  time/ops: eff_count 12.09ms {'cmp': 20869, 'move': 23607, 'items': 2131}; weighted_dp 23.62ms {'pre_cmp': 20869, 'pre_move': 23607, 'probe': 23631, 'cells': 2131}; value_greedy 13.47ms {'cmp': 20489, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5193}
+  time/ops: eff_count 14.43ms {'cmp': 20869, 'move': 23607, 'items': 2131}; weighted_dp 15.33ms {'pre_cmp': 20869, 'pre_move': 23607, 'probe': 23631, 'cells': 2131}; value_greedy 29.25ms {'cmp': 20489, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5193}
 alarms: 3256 released, mean wait 371.29, max wait 2968, max wait priority>=9 2, peak queue 735
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 37.77ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 16.75ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 7.00ms {'items': 3256, 'bucket': 26235}
+  time/ops: heap 42.51ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 9.25ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 4.64ms {'items': 3256, 'bucket': 26235}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 2: Storm
 input: destination 99, blocked roads 3, crates 13, windows 2131 available of 2664, alarms 3257; changes: minutes x1.5 (ceil), tool crates x2, alarm p9 at tick 0
 route: 12 roads, cost 691
+  selected road IDs (HQ to destination): [8, 758, 756, 829, 330, 328, 517, 114, 111, 653, 251, 225]
   baseline: bellman_ford cost 691; fewest-roads route 12 roads, cost 691 (gap 0)
-  time/ops: dijkstra 4.63ms {'pq': 1468, 'move': 4581, 'nodes': 703, 'edges': 1782, 'relax': 1782, 'cmp': 6882}; bellman_ford 5.36ms {'rounds': 9, 'edges': 11816, 'relax': 11816}; bfs 0.56ms {'nodes': 703, 'edges': 1782}
+  time/ops: dijkstra 2.85ms {'pq': 1468, 'move': 4581, 'nodes': 703, 'edges': 1782, 'relax': 1782, 'cmp': 6882}; bellman_ford 3.21ms {'rounds': 9, 'edges': 11816, 'relax': 11816}; bfs 0.37ms {'nodes': 703, 'edges': 1782}
 load: 2 crates, value 198, weight 40/40
+  selected crate IDs (knapsack DP): [3, 6]
   baseline: ratio_greedy value 113 (gap 85)
-  time/ops: knapsack_dp 0.10ms {'items': 13, 'cells': 292}; ratio_greedy 0.21ms {'cmp': 35, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.08ms {'items': 13, 'cells': 292}; ratio_greedy 0.13ms {'cmp': 35, 'move': 49, 'items': 13}
 windows: 80 by earliest finish, DP value 1918 (69 windows)
+  selected rescue-window IDs (earliest finish): [729, 1519, 22, 944, 2127, 1914, 2046, 2662, 900, 150, 1677, 2301, 2362, 125, 329, 387, 261, 2486, 1884, 1492, 1610, 867, 2021, 414, 2524, 2632, 121, 342, 1759, 1092, 2201, 1650, 556, 1846, 487, 77, 2086, 1280, 2432, 947, 659, 2395, 862, 1836, 2567, 2090, 2656, 15, 619, 1552, 1411, 1332, 722, 107, 299, 1540, 1029, 646, 2385, 1242, 1571, 2610, 1506, 1691, 982, 2287, 861, 906, 1875, 2037, 1785, 1999, 2300, 871, 2190, 2294, 971, 1882, 626, 1886]
+  selected rescue-window IDs (weighted DP): [729, 536, 22, 944, 2127, 1914, 2046, 2662, 1031, 687, 1436, 1952, 2377, 160, 387, 261, 2486, 1884, 1492, 1610, 867, 2021, 414, 2524, 1816, 251, 639, 2511, 1650, 556, 1846, 487, 1789, 27, 2604, 2432, 947, 2230, 2395, 862, 2126, 2044, 837, 15, 619, 1552, 1762, 722, 2282, 755, 1540, 1029, 145, 1246, 1282, 1041, 2154, 1204, 2426, 2649, 1845, 1991, 871, 1201, 1781, 971, 321, 626, 1886]
   baseline: value_greedy value 571 (gap 1347)
-  time/ops: eff_count 12.78ms {'cmp': 20930, 'move': 23607, 'items': 2131}; weighted_dp 19.49ms {'pre_cmp': 20930, 'pre_move': 23607, 'probe': 23633, 'cells': 2131}; value_greedy 17.87ms {'cmp': 20572, 'move': 23607, 'items': 2131, 'shift': 33, 'probe': 6302}
+  time/ops: eff_count 8.34ms {'cmp': 20930, 'move': 23607, 'items': 2131}; weighted_dp 12.84ms {'pre_cmp': 20930, 'pre_move': 23607, 'probe': 23633, 'cells': 2131}; value_greedy 9.68ms {'cmp': 20572, 'move': 23607, 'items': 2131, 'shift': 33, 'probe': 6302}
 alarms: 3257 released, mean wait 372.18, max wait 2970, max wait priority>=9 2, peak queue 736
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 38.86ms {'items': 3257, 'pq': 6514, 'move': 44034, 'cmp': 63198}; sorted_list 13.76ms {'items': 3257, 'shift': 209949, 'probe': 25898, 'cmp': 25898}; buckets 6.51ms {'items': 3257, 'bucket': 26239}
+  time/ops: heap 44.06ms {'items': 3257, 'pq': 6514, 'move': 44034, 'cmp': 63198}; sorted_list 13.46ms {'items': 3257, 'shift': 209949, 'probe': 25898, 'cmp': 25898}; buckets 13.08ms {'items': 3257, 'bucket': 26239}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 3: Food shortage
 input: destination 392, blocked roads 10, crates 13, windows 2131 available of 2664, alarms 3256; changes: food crates x2
 route: 7 roads, cost 301
+  selected road IDs (HQ to destination): [8, 105, 104, 54, 53, 205, 206]
   baseline: bellman_ford cost 301; fewest-roads route 7 roads, cost 301 (gap 0)
-  time/ops: dijkstra 4.19ms {'pq': 1452, 'move': 4526, 'nodes': 698, 'edges': 1768, 'relax': 1768, 'cmp': 6796}; bellman_ford 4.51ms {'rounds': 9, 'edges': 11694, 'relax': 11694}; bfs 0.86ms {'nodes': 698, 'edges': 1768}
+  time/ops: dijkstra 3.83ms {'pq': 1452, 'move': 4526, 'nodes': 698, 'edges': 1768, 'relax': 1768, 'cmp': 6796}; bellman_ford 4.57ms {'rounds': 9, 'edges': 11694, 'relax': 11694}; bfs 0.52ms {'nodes': 698, 'edges': 1768}
 load: 2 crates, value 210, weight 40/40
+  selected crate IDs (knapsack DP): [9, 12]
   baseline: ratio_greedy value 121 (gap 89)
-  time/ops: knapsack_dp 0.11ms {'items': 13, 'cells': 292}; ratio_greedy 0.21ms {'cmp': 33, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.06ms {'items': 13, 'cells': 292}; ratio_greedy 0.12ms {'cmp': 33, 'move': 49, 'items': 13}
 windows: 85 by earliest finish, DP value 1948 (70 windows)
+  selected rescue-window IDs (earliest finish): [729, 1519, 778, 418, 660, 2046, 1481, 2149, 1073, 143, 1698, 648, 655, 1333, 160, 261, 2486, 1884, 1321, 2286, 2663, 2466, 414, 2524, 2034, 121, 1763, 1743, 2201, 298, 1650, 556, 1846, 1549, 1789, 2086, 2048, 1804, 683, 106, 1773, 2403, 1473, 365, 1836, 6, 913, 2656, 973, 15, 2653, 2593, 1718, 698, 866, 1598, 909, 553, 1029, 818, 2130, 1440, 2610, 303, 1506, 1691, 1041, 693, 1678, 543, 906, 1875, 1668, 2545, 1999, 358, 483, 2190, 2294, 971, 1443, 1223, 2268, 626, 1886]
+  selected rescue-window IDs (weighted DP): [729, 536, 2178, 418, 1914, 1734, 1481, 2149, 1073, 143, 1520, 125, 1333, 160, 261, 2486, 1884, 409, 491, 2524, 1816, 251, 639, 2511, 298, 1650, 556, 1846, 1549, 1789, 2086, 2398, 1721, 443, 2230, 2431, 2126, 198, 880, 619, 1718, 698, 669, 1598, 2250, 553, 1029, 883, 689, 1571, 2610, 303, 1506, 1691, 1041, 693, 2154, 2243, 1875, 1668, 2649, 1845, 358, 871, 1838, 1320, 793, 2268, 626, 1886]
   baseline: value_greedy value 384 (gap 1564)
-  time/ops: eff_count 12.90ms {'cmp': 20872, 'move': 23607, 'items': 2131}; weighted_dp 18.18ms {'pre_cmp': 20872, 'pre_move': 23607, 'probe': 23619, 'cells': 2131}; value_greedy 16.84ms {'cmp': 20447, 'move': 23607, 'items': 2131, 'shift': 9, 'probe': 4753}
+  time/ops: eff_count 10.13ms {'cmp': 20872, 'move': 23607, 'items': 2131}; weighted_dp 22.54ms {'pre_cmp': 20872, 'pre_move': 23607, 'probe': 23619, 'cells': 2131}; value_greedy 10.36ms {'cmp': 20447, 'move': 23607, 'items': 2131, 'shift': 9, 'probe': 4753}
 alarms: 3256 released, mean wait 371.29, max wait 2968, max wait priority>=9 2, peak queue 735
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 39.59ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 14.42ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 9.07ms {'items': 3256, 'bucket': 26235}
+  time/ops: heap 37.38ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 9.24ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 4.44ms {'items': 3256, 'bucket': 26235}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 4: Dangerous area
 input: destination 486, blocked roads 22, crates 13, windows 2131 available of 2664, alarms 3256; changes: penalties >= 2 doubled
 route: 8 roads, cost 375
+  selected road IDs (HQ to destination): [8, 105, 104, 54, 53, 205, 207, 736]
   baseline: bellman_ford cost 375; fewest-roads route 8 roads, cost 375 (gap 0)
-  time/ops: dijkstra 4.07ms {'pq': 1426, 'move': 4529, 'nodes': 682, 'edges': 1724, 'relax': 1724, 'cmp': 6799}; bellman_ford 4.97ms {'rounds': 9, 'edges': 11537, 'relax': 11537}; bfs 0.66ms {'nodes': 682, 'edges': 1724}
+  time/ops: dijkstra 2.79ms {'pq': 1426, 'move': 4529, 'nodes': 682, 'edges': 1724, 'relax': 1724, 'cmp': 6799}; bellman_ford 2.96ms {'rounds': 9, 'edges': 11537, 'relax': 11537}; bfs 0.36ms {'nodes': 682, 'edges': 1724}
 load: 2 crates, value 198, weight 40/40
+  selected crate IDs (knapsack DP): [3, 6]
   baseline: ratio_greedy value 113 (gap 85)
-  time/ops: knapsack_dp 0.10ms {'items': 13, 'cells': 292}; ratio_greedy 0.21ms {'cmp': 35, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.06ms {'items': 13, 'cells': 292}; ratio_greedy 0.12ms {'cmp': 35, 'move': 49, 'items': 13}
 windows: 85 by earliest finish, DP value 2015 (72 windows)
+  selected rescue-window IDs (earliest finish): [729, 1519, 22, 418, 2127, 1914, 1734, 1313, 2149, 1073, 143, 1698, 648, 2362, 125, 1333, 160, 387, 789, 1990, 1492, 1610, 867, 512, 414, 2524, 2632, 164, 1763, 1092, 298, 1650, 2295, 1614, 335, 672, 1685, 1280, 683, 947, 1773, 2403, 1473, 365, 2195, 2567, 2090, 913, 1435, 15, 2653, 2593, 1718, 698, 1762, 722, 107, 299, 553, 1029, 818, 2130, 1242, 1857, 303, 1282, 1104, 429, 693, 1678, 543, 1204, 1875, 1668, 2037, 1785, 1999, 358, 483, 2190, 2294, 1943, 1882, 1223, 2268]
+  selected rescue-window IDs (weighted DP): [729, 1519, 2178, 418, 2127, 1914, 1667, 1313, 2149, 1073, 143, 1698, 1952, 2362, 125, 1333, 160, 387, 634, 1764, 2587, 512, 2067, 2632, 164, 1225, 298, 1650, 903, 487, 1789, 27, 2048, 2432, 947, 443, 2230, 2395, 862, 2195, 322, 913, 837, 1523, 619, 1552, 698, 1762, 1598, 2282, 755, 1540, 1029, 883, 2563, 1857, 303, 1282, 1104, 429, 693, 2154, 2243, 1875, 1668, 2649, 1845, 358, 864, 1838, 1320, 735]
   baseline: value_greedy value 415 (gap 1600)
-  time/ops: eff_count 13.12ms {'cmp': 20872, 'move': 23607, 'items': 2131}; weighted_dp 17.90ms {'pre_cmp': 20872, 'pre_move': 23607, 'probe': 23603, 'cells': 2131}; value_greedy 13.88ms {'cmp': 20470, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5186}
+  time/ops: eff_count 16.01ms {'cmp': 20872, 'move': 23607, 'items': 2131}; weighted_dp 12.62ms {'pre_cmp': 20872, 'pre_move': 23607, 'probe': 23603, 'cells': 2131}; value_greedy 10.21ms {'cmp': 20470, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5186}
 alarms: 3256 released, mean wait 371.29, max wait 2968, max wait priority>=9 2, peak queue 735
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 38.77ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 14.68ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 8.06ms {'items': 3256, 'bucket': 26235}
+  time/ops: heap 28.96ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 34.14ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 18.29ms {'items': 3256, 'bucket': 26235}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 5: Medical emergency
 input: destination 99, blocked roads 9, crates 13, windows 2132 available of 2664, alarms 3257; changes: medicine crates x3, alarm p10 at tick 0
 route: 12 roads, cost 465
+  selected road IDs (HQ to destination): [8, 758, 756, 829, 330, 328, 517, 114, 111, 653, 251, 225]
   baseline: bellman_ford cost 465; fewest-roads route 12 roads, cost 465 (gap 0)
-  time/ops: dijkstra 4.96ms {'pq': 1448, 'move': 4524, 'nodes': 695, 'edges': 1764, 'relax': 1764, 'cmp': 6791}; bellman_ford 4.40ms {'rounds': 9, 'edges': 11366, 'relax': 11366}; bfs 0.56ms {'nodes': 695, 'edges': 1764}
+  time/ops: dijkstra 5.52ms {'pq': 1448, 'move': 4524, 'nodes': 695, 'edges': 1764, 'relax': 1764, 'cmp': 6791}; bellman_ford 3.20ms {'rounds': 9, 'edges': 11366, 'relax': 11366}; bfs 1.26ms {'nodes': 695, 'edges': 1764}
 load: 2 crates, value 198, weight 40/40
+  selected crate IDs (knapsack DP): [3, 6]
   baseline: ratio_greedy value 139 (gap 59)
-  time/ops: knapsack_dp 0.10ms {'items': 13, 'cells': 292}; ratio_greedy 0.20ms {'cmp': 35, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.06ms {'items': 13, 'cells': 292}; ratio_greedy 0.12ms {'cmp': 35, 'move': 49, 'items': 13}
 windows: 88 by earliest finish, DP value 2039 (73 windows)
+  selected rescue-window IDs (earliest finish): [729, 1519, 22, 418, 2127, 1914, 2046, 2662, 1313, 2149, 1073, 143, 1698, 648, 2362, 1207, 1333, 1226, 387, 261, 2486, 1884, 1492, 2286, 2663, 512, 414, 2524, 2632, 121, 342, 1763, 1092, 2201, 298, 1042, 1846, 487, 77, 2086, 2048, 1804, 683, 947, 1773, 2403, 1473, 862, 1836, 2567, 913, 2656, 973, 1542, 619, 1718, 698, 866, 1332, 722, 107, 299, 553, 1029, 818, 1271, 1571, 227, 1506, 1691, 982, 693, 1678, 543, 906, 134, 2037, 782, 857, 483, 1838, 2294, 971, 1443, 1223, 2268, 626, 1886]
+  selected rescue-window IDs (weighted DP): [729, 536, 2178, 418, 2127, 1914, 2046, 2662, 1313, 2149, 1073, 143, 1698, 1952, 2362, 1207, 1333, 1226, 387, 261, 2486, 1884, 409, 491, 2524, 1816, 251, 639, 2511, 298, 1042, 1846, 487, 1789, 27, 2048, 2432, 947, 2101, 1498, 862, 2126, 198, 837, 1523, 619, 1552, 698, 1762, 1598, 107, 299, 553, 1029, 883, 2563, 1857, 303, 1282, 1041, 693, 2154, 2243, 1668, 854, 358, 871, 1838, 393, 793, 2268, 626, 1886]
   baseline: value_greedy value 464 (gap 1575)
-  time/ops: eff_count 14.29ms {'cmp': 20927, 'move': 23620, 'items': 2132}; weighted_dp 20.28ms {'pre_cmp': 20927, 'pre_move': 23620, 'probe': 23636, 'cells': 2132}; value_greedy 14.70ms {'cmp': 20456, 'move': 23620, 'items': 2132, 'shift': 22, 'probe': 5495}
+  time/ops: eff_count 8.16ms {'cmp': 20927, 'move': 23620, 'items': 2132}; weighted_dp 13.37ms {'pre_cmp': 20927, 'pre_move': 23620, 'probe': 23636, 'cells': 2132}; value_greedy 13.20ms {'cmp': 20456, 'move': 23620, 'items': 2132, 'shift': 22, 'probe': 5495}
 alarms: 3257 released, mean wait 372.18, max wait 2970, max wait priority>=9 2, peak queue 736
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 38.62ms {'items': 3257, 'pq': 6514, 'move': 44034, 'cmp': 63198}; sorted_list 15.21ms {'items': 3257, 'shift': 209949, 'probe': 25898, 'cmp': 25898}; buckets 7.58ms {'items': 3257, 'bucket': 26238}
+  time/ops: heap 30.68ms {'items': 3257, 'pq': 6514, 'move': 44034, 'cmp': 63198}; sorted_list 9.57ms {'items': 3257, 'shift': 209949, 'probe': 25898, 'cmp': 25898}; buckets 8.99ms {'items': 3257, 'bucket': 26238}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 6: Flood
 input: destination 392, blocked roads 57, crates 13, windows 2131 available of 2664, alarms 3256; changes: none
 route: 7 roads, cost 301
+  selected road IDs (HQ to destination): [8, 105, 104, 54, 53, 205, 206]
   baseline: bellman_ford cost 301; fewest-roads route 7 roads, cost 301 (gap 0)
-  time/ops: dijkstra 4.04ms {'pq': 1294, 'move': 3992, 'nodes': 624, 'edges': 1600, 'relax': 1600, 'cmp': 5958}; bellman_ford 4.13ms {'rounds': 9, 'edges': 10673, 'relax': 10673}; bfs 0.52ms {'nodes': 624, 'edges': 1600}
+  time/ops: dijkstra 5.68ms {'pq': 1294, 'move': 3992, 'nodes': 624, 'edges': 1600, 'relax': 1600, 'cmp': 5958}; bellman_ford 6.58ms {'rounds': 9, 'edges': 10673, 'relax': 10673}; bfs 0.73ms {'nodes': 624, 'edges': 1600}
 load: 2 crates, value 198, weight 40/40
+  selected crate IDs (knapsack DP): [3, 6]
   baseline: ratio_greedy value 113 (gap 85)
-  time/ops: knapsack_dp 0.10ms {'items': 13, 'cells': 292}; ratio_greedy 0.23ms {'cmp': 35, 'move': 49, 'items': 13}
+  time/ops: knapsack_dp 0.11ms {'items': 13, 'cells': 292}; ratio_greedy 0.24ms {'cmp': 35, 'move': 49, 'items': 13}
 windows: 88 by earliest finish, DP value 2019 (73 windows)
+  selected rescue-window IDs (earliest finish): [232, 22, 418, 2127, 921, 1667, 1313, 150, 143, 1698, 648, 2362, 125, 1333, 160, 387, 261, 2486, 1492, 1610, 867, 2021, 2067, 2632, 121, 342, 1763, 1092, 2201, 298, 1650, 556, 1846, 487, 77, 2086, 2048, 683, 947, 1773, 2403, 1473, 365, 1836, 2567, 2090, 913, 2656, 973, 15, 2653, 2593, 1718, 698, 866, 1332, 722, 107, 755, 1540, 1527, 875, 1242, 1571, 2610, 303, 1506, 1691, 982, 693, 1678, 543, 906, 1875, 1668, 2037, 1785, 1845, 358, 483, 2190, 1781, 971, 1443, 1223, 2268, 626, 1886]
+  selected rescue-window IDs (weighted DP): [1262, 2178, 418, 2127, 2046, 2662, 1031, 1073, 143, 1698, 1952, 2362, 125, 1333, 160, 387, 261, 447, 1492, 1610, 867, 2021, 1482, 251, 342, 1763, 2511, 298, 1650, 556, 1846, 487, 672, 271, 2432, 947, 443, 2230, 2395, 862, 2126, 198, 837, 2297, 1552, 698, 1762, 1598, 2282, 755, 1540, 883, 2563, 1857, 303, 1282, 1041, 693, 820, 2243, 1875, 1668, 2037, 782, 1845, 358, 871, 1838, 1320, 793, 2268, 626, 1886]
   baseline: value_greedy value 415 (gap 1604)
-  time/ops: eff_count 12.01ms {'cmp': 20869, 'move': 23607, 'items': 2131}; weighted_dp 18.73ms {'pre_cmp': 20869, 'pre_move': 23607, 'probe': 23631, 'cells': 2131}; value_greedy 13.56ms {'cmp': 20489, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5193}
+  time/ops: eff_count 15.13ms {'cmp': 20869, 'move': 23607, 'items': 2131}; weighted_dp 12.33ms {'pre_cmp': 20869, 'pre_move': 23607, 'probe': 23631, 'cells': 2131}; value_greedy 9.72ms {'cmp': 20489, 'move': 23607, 'items': 2131, 'shift': 18, 'probe': 5193}
 alarms: 3256 released, mean wait 371.29, max wait 2968, max wait priority>=9 2, peak queue 735
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 38.48ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 15.08ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 7.37ms {'items': 3256, 'bucket': 26235}
+  time/ops: heap 26.95ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 9.13ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 4.51ms {'items': 3256, 'bucket': 26235}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 7: Evacuation
 input: destination 486, blocked roads 57, crates 13, windows 2131 available of 2664, alarms 3256; changes: no loading
 route: no route, trip skipped (no loading)
 windows: 80 by earliest finish, DP value 1918 (69 windows)
+  selected rescue-window IDs (earliest finish): [729, 1519, 22, 944, 2127, 1914, 2046, 2662, 900, 150, 1677, 2301, 2362, 125, 329, 387, 261, 2486, 1884, 1492, 1610, 867, 2021, 414, 2524, 2632, 121, 342, 1759, 1092, 2201, 1650, 556, 1846, 487, 77, 2086, 1280, 2432, 947, 659, 2395, 862, 1836, 2567, 2090, 2656, 15, 619, 1552, 1411, 1332, 722, 107, 299, 1540, 1029, 646, 2385, 1242, 1571, 2610, 1506, 1691, 982, 2287, 861, 906, 1875, 2037, 1785, 1999, 2300, 871, 2190, 2294, 971, 1882, 626, 1886]
+  selected rescue-window IDs (weighted DP): [729, 536, 22, 944, 2127, 1914, 2046, 2662, 1031, 687, 1436, 1952, 2377, 160, 387, 261, 2486, 1884, 1492, 1610, 867, 2021, 414, 2524, 1816, 251, 639, 2511, 1650, 556, 1846, 487, 1789, 27, 2604, 2432, 947, 2230, 2395, 862, 2126, 2044, 837, 15, 619, 1552, 1762, 722, 2282, 755, 1540, 1029, 145, 1246, 1282, 1041, 2154, 1204, 2426, 2649, 1845, 1991, 871, 1201, 1781, 971, 321, 626, 1886]
   baseline: value_greedy value 571 (gap 1347)
-  time/ops: eff_count 12.01ms {'cmp': 20930, 'move': 23607, 'items': 2131}; weighted_dp 19.13ms {'pre_cmp': 20930, 'pre_move': 23607, 'probe': 23633, 'cells': 2131}; value_greedy 14.36ms {'cmp': 20572, 'move': 23607, 'items': 2131, 'shift': 33, 'probe': 6302}
+  time/ops: eff_count 8.94ms {'cmp': 20930, 'move': 23607, 'items': 2131}; weighted_dp 12.37ms {'pre_cmp': 20930, 'pre_move': 23607, 'probe': 23633, 'cells': 2131}; value_greedy 10.21ms {'cmp': 20572, 'move': 23607, 'items': 2131, 'shift': 33, 'probe': 6302}
 alarms: 3256 released, mean wait 371.29, max wait 2968, max wait priority>=9 2, peak queue 735
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 44.26ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 15.50ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 6.66ms {'items': 3256, 'bucket': 26235}
+  time/ops: heap 28.86ms {'items': 3256, 'pq': 6512, 'move': 43964, 'cmp': 63156}; sorted_list 17.12ms {'items': 3256, 'shift': 209652, 'probe': 25886, 'cmp': 25886}; buckets 4.46ms {'items': 3256, 'bucket': 26235}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 SUMMARY 4-47: tier X, skipped trips 1, checks failed 0

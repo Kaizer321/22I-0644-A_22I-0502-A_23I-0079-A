@@ -2,83 +2,99 @@
 --- Day 1: Normal
 input: destination 306, blocked roads 0, crates 501, windows 872 available of 1090, alarms 2258; changes: none
 route: 527 roads, cost 13339
+  selected road IDs (HQ to destination): [0, 109, 110, 432, 433, 503, 225, 205, 113, 112, 189, 375, 374, 415, 523, 480, 481, 447, 446, 120, 119, 343, 169, 168, 179, 345, 194, 195, 440, 255, 254, 512, 340, 218, 217, 231, 264, 271, 282, 482, 473, 474, 184, 131, 132, 445, 515, 191, 127, 128, 234, 511, 347, 346, 391, 253, 252, 171, 170, 278, 279, 521, 490, 354, 85, 84, 351, 67, 68, 493, 139, 140, 377, 376, 397, 269, 211, 212, 216, 199, 200, 326, 90, 91, 337, 3, 2, 275, 245, 244, 413, 226, 227, 151, 150, 485, 320, 319, 461, 506, 64, 63, 157, 497, 316, 129, 130, 491, 454, 293, 292, 310, 405, 406, 372, 32, 33, 463, 400, 233, 232, 249, 274, 56, 55, 348, 373, 404, 510, 501, 72, 71, 42, 43, 334, 88, 89, 441, 122, 121, 235, 378, 352, 116, 86, 87, 4, 5, 289, 288, 386, 520, 525, 118, 117, 268, 165, 166, 527, 488, 411, 412, 385, 384, 437, 323, 322, 416, 66, 65, 198, 492, 444, 419, 420, 502, 23, 22, 196, 197, 15, 14, 265, 40, 41, 230, 228, 229, 452, 46, 47, 426, 210, 209, 311, 484, 436, 435, 137, 138, 442, 380, 381, 182, 183, 524, 318, 317, 325, 478, 477, 479, 408, 407, 330, 329, 455, 173, 174, 7, 6, 294, 203, 204, 498, 358, 357, 178, 133, 134, 504, 102, 101, 457, 54, 53, 321, 186, 185, 155, 156, 287, 409, 97, 98, 175, 76, 75, 96, 366, 315, 266, 267, 313, 312, 306, 305, 314, 153, 152, 398, 471, 276, 277, 489, 70, 69, 167, 350, 460, 353, 332, 108, 107, 31, 30, 60, 61, 331, 390, 52, 16, 17, 62, 50, 51, 470, 19, 18, 27, 26, 213, 281, 464, 465, 45, 44, 57, 145, 105, 106, 448, 12, 13, 509, 383, 382, 163, 164, 483, 449, 363, 338, 339, 393, 83, 82, 243, 395, 507, 111, 24, 25, 149, 158, 103, 104, 394, 324, 251, 250, 303, 417, 291, 290, 418, 220, 219, 410, 466, 500, 499, 516, 513, 160, 159, 246, 247, 272, 273, 124, 123, 307, 308, 115, 114, 434, 458, 403, 242, 241, 355, 443, 371, 239, 240, 468, 467, 450, 451, 188, 187, 259, 144, 143, 172, 206, 207, 162, 161, 309, 414, 528, 300, 299, 236, 237, 456, 29, 28, 260, 508, 459, 359, 360, 427, 428, 487, 486, 215, 214, 258, 257, 49, 48, 453, 335, 208, 141, 142, 181, 180, 505, 388, 389, 522, 369, 135, 136, 475, 496, 21, 20, 518, 425, 424, 431, 476, 367, 368, 421, 379, 333, 201, 202, 469, 517, 519, 526, 514, 77, 34, 35, 262, 261, 280, 472, 9, 8, 92, 93, 402, 401, 422, 423, 59, 58, 344, 370, 221, 73, 74, 365, 364, 328, 327, 285, 286, 284, 283, 399, 126, 125, 154, 336, 439, 79, 78, 270, 10, 11, 222, 176, 177, 248, 356, 304, 94, 95, 342, 341, 80, 81, 37, 36, 256, 430, 429, 387, 301, 297, 298, 438, 193, 192, 263, 296, 295, 396, 362, 361, 238, 223, 224, 462, 100, 99, 190, 38, 39, 302, 494, 495, 147, 146, 349, 392]
   baseline: bellman_ford cost 13339; fewest-roads route 527 roads, cost 13339 (gap 0)
-  time/ops: dijkstra 1.93ms {'pq': 1058, 'move': 531, 'nodes': 529, 'edges': 1058, 'relax': 1058, 'cmp': 1}; bellman_ford 88.83ms {'rounds': 254, 'edges': 137648, 'relax': 137648}; bfs 0.59ms {'nodes': 529, 'edges': 1058}
+  time/ops: dijkstra 0.87ms {'pq': 1058, 'move': 531, 'nodes': 529, 'edges': 1058, 'relax': 1058, 'cmp': 1}; bellman_ford 65.69ms {'rounds': 254, 'edges': 137648, 'relax': 137648}; bfs 0.23ms {'nodes': 529, 'edges': 1058}
 load: 248 crates, value 16871, weight 1708/1708
+  selected crate IDs (knapsack DP): [1, 2, 3, 7, 8, 9, 11, 21, 28, 32, 34, 35, 36, 47, 49, 50, 53, 57, 58, 59, 62, 65, 67, 68, 69, 70, 72, 74, 78, 83, 84, 85, 89, 91, 92, 93, 94, 96, 97, 99, 100, 101, 104, 105, 109, 110, 112, 115, 116, 117, 119, 121, 122, 124, 125, 126, 127, 128, 130, 131, 132, 136, 137, 138, 139, 140, 142, 145, 147, 148, 149, 151, 152, 154, 156, 158, 162, 164, 165, 166, 168, 170, 172, 173, 178, 182, 185, 188, 191, 194, 199, 200, 201, 203, 204, 208, 210, 211, 213, 214, 216, 217, 218, 219, 220, 221, 223, 226, 229, 230, 232, 234, 236, 240, 242, 243, 244, 246, 247, 249, 253, 257, 258, 259, 260, 261, 263, 264, 265, 268, 269, 270, 272, 273, 276, 277, 280, 281, 283, 284, 285, 287, 288, 289, 291, 292, 296, 298, 299, 300, 304, 307, 308, 311, 312, 314, 316, 317, 320, 322, 324, 329, 330, 331, 336, 339, 343, 345, 347, 349, 350, 354, 362, 365, 369, 370, 373, 374, 378, 380, 383, 390, 392, 393, 395, 398, 400, 401, 403, 405, 406, 408, 409, 410, 411, 414, 415, 418, 419, 421, 422, 423, 424, 425, 427, 430, 431, 432, 434, 439, 440, 441, 442, 443, 444, 446, 448, 451, 452, 455, 456, 457, 458, 459, 461, 463, 465, 467, 468, 470, 471, 473, 475, 476, 482, 483, 484, 485, 486, 487, 489, 491, 492, 493, 494, 497, 498, 501]
   baseline: ratio_greedy value 16865 (gap 6)
-  time/ops: knapsack_dp 180.99ms {'items': 501, 'cells': 850871}; ratio_greedy 18.70ms {'cmp': 3857, 'move': 4498, 'items': 501}
+  time/ops: knapsack_dp 147.74ms {'items': 501, 'cells': 850871}; ratio_greedy 27.56ms {'cmp': 3857, 'move': 4498, 'items': 501}
 windows: 53 by earliest finish, DP value 3613 (49 windows)
+  selected rescue-window IDs (earliest finish): [263, 996, 475, 1062, 120, 137, 125, 670, 282, 186, 412, 896, 593, 470, 1023, 780, 788, 738, 898, 55, 193, 1026, 676, 955, 91, 701, 488, 645, 426, 752, 182, 278, 692, 283, 126, 592, 525, 160, 168, 65, 330, 290, 200, 937, 7, 686, 407, 61, 535, 281, 1065, 615, 986]
+  selected rescue-window IDs (weighted DP): [263, 996, 475, 1062, 120, 137, 750, 1063, 1075, 412, 583, 470, 1023, 847, 1047, 1088, 898, 553, 1006, 928, 710, 930, 476, 701, 488, 645, 426, 752, 861, 692, 721, 126, 311, 915, 160, 352, 920, 290, 200, 236, 7, 837, 410, 343, 340, 281, 867, 1017, 816]
   baseline: value_greedy value 2393 (gap 1220)
-  time/ops: eff_count 4.71ms {'cmp': 7441, 'move': 8568, 'items': 872}; weighted_dp 7.14ms {'pre_cmp': 7441, 'pre_move': 8568, 'probe': 8552, 'cells': 872}; value_greedy 5.49ms {'cmp': 7453, 'move': 8568, 'items': 872, 'shift': 191, 'probe': 4082}
+  time/ops: eff_count 9.59ms {'cmp': 7441, 'move': 8568, 'items': 872}; weighted_dp 14.60ms {'pre_cmp': 7441, 'pre_move': 8568, 'probe': 8552, 'cells': 872}; value_greedy 11.15ms {'cmp': 7453, 'move': 8568, 'items': 872, 'shift': 191, 'probe': 4082}
 alarms: 2258 released, mean wait 376.50, max wait 2023, max wait priority>=9 2, peak queue 754
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 27.07ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 10.94ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 4.55ms {'items': 2258, 'bucket': 16900}
+  time/ops: heap 52.44ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 12.38ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 4.86ms {'items': 2258, 'bucket': 16900}
 constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
 outcome: trip made; checks failed 0
 --- Day 2: Storm
 input: destination 315, blocked roads 58, crates 501, windows 872 available of 1090, alarms 2259; changes: minutes x1.5 (ceil), tool crates x2, alarm p9 at tick 0
 route: no route, trip skipped (no loading)
 windows: 56 by earliest finish, DP value 3612 (50 windows)
+  selected rescue-window IDs (earliest finish): [167, 996, 475, 1062, 634, 137, 125, 670, 282, 186, 412, 896, 934, 470, 834, 564, 29, 464, 472, 360, 55, 274, 944, 17, 710, 234, 835, 91, 701, 645, 426, 752, 182, 900, 692, 721, 126, 592, 409, 559, 160, 270, 330, 39, 290, 200, 937, 7, 686, 407, 61, 535, 281, 1065, 615, 986]
+  selected rescue-window IDs (weighted DP): [167, 996, 475, 1062, 1059, 137, 750, 1075, 412, 662, 934, 470, 834, 564, 29, 1047, 472, 974, 274, 944, 539, 234, 930, 476, 701, 645, 426, 752, 861, 541, 569, 126, 311, 915, 160, 352, 330, 39, 290, 849, 236, 7, 837, 410, 61, 340, 281, 629, 1017, 816]
   baseline: value_greedy value 2193 (gap 1419)
-  time/ops: eff_count 4.54ms {'cmp': 7417, 'move': 8568, 'items': 872}; weighted_dp 7.16ms {'pre_cmp': 7417, 'pre_move': 8568, 'probe': 8592, 'cells': 872}; value_greedy 6.87ms {'cmp': 7439, 'move': 8568, 'items': 872, 'shift': 170, 'probe': 4033}
+  time/ops: eff_count 4.71ms {'cmp': 7417, 'move': 8568, 'items': 872}; weighted_dp 7.12ms {'pre_cmp': 7417, 'pre_move': 8568, 'probe': 8592, 'cells': 872}; value_greedy 6.92ms {'cmp': 7439, 'move': 8568, 'items': 872, 'shift': 170, 'probe': 4033}
 alarms: 2259 released, mean wait 377.33, max wait 2024, max wait priority>=9 2, peak queue 755
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 25.82ms {'items': 2259, 'pq': 4518, 'move': 30756, 'cmp': 43933}; sorted_list 9.89ms {'items': 2259, 'shift': 189599, 'probe': 18078, 'cmp': 18078}; buckets 3.95ms {'items': 2259, 'bucket': 16904}
+  time/ops: heap 54.23ms {'items': 2259, 'pq': 4518, 'move': 30756, 'cmp': 43933}; sorted_list 11.16ms {'items': 2259, 'shift': 189599, 'probe': 18078, 'cmp': 18078}; buckets 4.79ms {'items': 2259, 'bucket': 16904}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 --- Day 3: Food shortage
 input: destination 423, blocked roads 58, crates 501, windows 872 available of 1090, alarms 2258; changes: food crates x2
 route: no route, trip skipped (no loading)
 windows: 56 by earliest finish, DP value 3626 (50 windows)
+  selected rescue-window IDs (earliest finish): [263, 996, 475, 24, 634, 398, 318, 1063, 1075, 708, 433, 593, 470, 834, 564, 29, 464, 738, 898, 55, 274, 933, 49, 858, 710, 234, 835, 91, 701, 488, 645, 426, 230, 278, 754, 569, 126, 311, 525, 160, 168, 65, 330, 39, 290, 200, 236, 1079, 909, 410, 61, 535, 281, 1065, 615, 986]
+  selected rescue-window IDs (weighted DP): [263, 996, 110, 24, 634, 415, 286, 1063, 133, 583, 470, 834, 564, 118, 913, 1088, 974, 274, 944, 928, 710, 234, 930, 476, 701, 488, 645, 426, 230, 861, 541, 569, 126, 311, 915, 818, 1008, 330, 39, 290, 849, 236, 686, 410, 343, 340, 281, 629, 8, 816]
   baseline: value_greedy value 2268 (gap 1358)
-  time/ops: eff_count 4.37ms {'cmp': 7408, 'move': 8568, 'items': 872}; weighted_dp 8.53ms {'pre_cmp': 7408, 'pre_move': 8568, 'probe': 8582, 'cells': 872}; value_greedy 5.76ms {'cmp': 7403, 'move': 8568, 'items': 872, 'shift': 171, 'probe': 4030}
+  time/ops: eff_count 15.35ms {'cmp': 7408, 'move': 8568, 'items': 872}; weighted_dp 7.26ms {'pre_cmp': 7408, 'pre_move': 8568, 'probe': 8582, 'cells': 872}; value_greedy 6.20ms {'cmp': 7403, 'move': 8568, 'items': 872, 'shift': 171, 'probe': 4030}
 alarms: 2258 released, mean wait 376.50, max wait 2023, max wait priority>=9 2, peak queue 754
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 28.71ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 12.35ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 7.55ms {'items': 2258, 'bucket': 16900}
+  time/ops: heap 30.68ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 13.36ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 4.79ms {'items': 2258, 'bucket': 16900}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 --- Day 4: Dangerous area
 input: destination 306, blocked roads 58, crates 501, windows 872 available of 1090, alarms 2258; changes: penalties >= 2 doubled
 route: no route, trip skipped (no loading)
 windows: 56 by earliest finish, DP value 3596 (50 windows)
+  selected rescue-window IDs (earliest finish): [263, 744, 110, 24, 634, 137, 125, 670, 282, 133, 433, 593, 470, 834, 564, 29, 464, 738, 898, 55, 274, 933, 49, 17, 710, 234, 835, 563, 1009, 488, 645, 549, 182, 278, 692, 283, 568, 409, 559, 160, 168, 65, 330, 39, 290, 200, 937, 7, 837, 407, 343, 388, 444, 117, 615, 1080]
+  selected rescue-window IDs (weighted DP): [263, 744, 110, 722, 1059, 137, 750, 1063, 1075, 412, 583, 470, 834, 564, 29, 1047, 1088, 974, 274, 944, 928, 710, 234, 930, 563, 520, 588, 112, 182, 278, 584, 128, 592, 915, 160, 352, 330, 39, 290, 200, 937, 7, 837, 410, 343, 340, 444, 629, 1017, 1002]
   baseline: value_greedy value 2067 (gap 1529)
-  time/ops: eff_count 3.97ms {'cmp': 7434, 'move': 8568, 'items': 872}; weighted_dp 6.27ms {'pre_cmp': 7434, 'pre_move': 8568, 'probe': 8578, 'cells': 872}; value_greedy 5.47ms {'cmp': 7417, 'move': 8568, 'items': 872, 'shift': 163, 'probe': 3872}
+  time/ops: eff_count 5.82ms {'cmp': 7434, 'move': 8568, 'items': 872}; weighted_dp 7.12ms {'pre_cmp': 7434, 'pre_move': 8568, 'probe': 8578, 'cells': 872}; value_greedy 7.15ms {'cmp': 7417, 'move': 8568, 'items': 872, 'shift': 163, 'probe': 3872}
 alarms: 2258 released, mean wait 376.50, max wait 2023, max wait priority>=9 2, peak queue 754
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 24.59ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 9.04ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 3.83ms {'items': 2258, 'bucket': 16900}
+  time/ops: heap 35.52ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 11.79ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 4.82ms {'items': 2258, 'bucket': 16900}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 --- Day 5: Medical emergency
 input: destination 315, blocked roads 58, crates 501, windows 872 available of 1090, alarms 2259; changes: medicine crates x3, alarm p10 at tick 0
 route: no route, trip skipped (no loading)
 windows: 54 by earliest finish, DP value 3336 (48 windows)
+  selected rescue-window IDs (earliest finish): [263, 996, 308, 41, 137, 318, 1063, 186, 412, 896, 593, 18, 124, 564, 29, 464, 738, 898, 553, 274, 933, 49, 17, 234, 543, 91, 701, 488, 649, 549, 182, 278, 692, 283, 126, 592, 409, 559, 652, 168, 783, 844, 39, 807, 937, 7, 686, 407, 61, 388, 281, 117, 8, 986]
+  selected rescue-window IDs (weighted DP): [263, 996, 1062, 1059, 137, 286, 1063, 133, 583, 18, 124, 564, 29, 1047, 1088, 974, 274, 933, 719, 676, 234, 543, 476, 701, 488, 588, 112, 861, 541, 569, 126, 311, 559, 818, 1008, 844, 114, 849, 236, 7, 837, 407, 343, 388, 281, 629, 1017, 816]
   baseline: value_greedy value 2453 (gap 883)
-  time/ops: eff_count 4.03ms {'cmp': 7433, 'move': 8568, 'items': 872}; weighted_dp 6.58ms {'pre_cmp': 7433, 'pre_move': 8568, 'probe': 8574, 'cells': 872}; value_greedy 5.16ms {'cmp': 7423, 'move': 8568, 'items': 872, 'shift': 183, 'probe': 4097}
+  time/ops: eff_count 9.64ms {'cmp': 7433, 'move': 8568, 'items': 872}; weighted_dp 14.12ms {'pre_cmp': 7433, 'pre_move': 8568, 'probe': 8574, 'cells': 872}; value_greedy 23.34ms {'cmp': 7423, 'move': 8568, 'items': 872, 'shift': 183, 'probe': 4097}
 alarms: 2259 released, mean wait 377.33, max wait 2024, max wait priority>=9 2, peak queue 755
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 25.93ms {'items': 2259, 'pq': 4518, 'move': 30756, 'cmp': 43933}; sorted_list 9.35ms {'items': 2259, 'shift': 189599, 'probe': 18078, 'cmp': 18078}; buckets 3.88ms {'items': 2259, 'bucket': 16903}
+  time/ops: heap 54.52ms {'items': 2259, 'pq': 4518, 'move': 30756, 'cmp': 43933}; sorted_list 19.80ms {'items': 2259, 'shift': 189599, 'probe': 18078, 'cmp': 18078}; buckets 5.82ms {'items': 2259, 'bucket': 16903}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 --- Day 6: Flood
 input: destination 423, blocked roads 174, crates 501, windows 872 available of 1090, alarms 2258; changes: none
 route: no route, trip skipped (no loading)
 windows: 53 by earliest finish, DP value 3613 (49 windows)
+  selected rescue-window IDs (earliest finish): [263, 996, 475, 1062, 120, 137, 125, 670, 282, 186, 412, 896, 593, 470, 1023, 780, 788, 738, 898, 55, 193, 1026, 676, 955, 91, 701, 488, 645, 426, 752, 182, 278, 692, 283, 126, 592, 525, 160, 168, 65, 330, 290, 200, 937, 7, 686, 407, 61, 535, 281, 1065, 615, 986]
+  selected rescue-window IDs (weighted DP): [263, 996, 475, 1062, 120, 137, 750, 1063, 1075, 412, 583, 470, 1023, 847, 1047, 1088, 898, 553, 1006, 928, 710, 930, 476, 701, 488, 645, 426, 752, 861, 692, 721, 126, 311, 915, 160, 352, 920, 290, 200, 236, 7, 837, 410, 343, 340, 281, 867, 1017, 816]
   baseline: value_greedy value 2393 (gap 1220)
-  time/ops: eff_count 4.94ms {'cmp': 7441, 'move': 8568, 'items': 872}; weighted_dp 7.31ms {'pre_cmp': 7441, 'pre_move': 8568, 'probe': 8552, 'cells': 872}; value_greedy 5.33ms {'cmp': 7453, 'move': 8568, 'items': 872, 'shift': 191, 'probe': 4082}
+  time/ops: eff_count 4.73ms {'cmp': 7441, 'move': 8568, 'items': 872}; weighted_dp 9.84ms {'pre_cmp': 7441, 'pre_move': 8568, 'probe': 8552, 'cells': 872}; value_greedy 12.89ms {'cmp': 7453, 'move': 8568, 'items': 872, 'shift': 191, 'probe': 4082}
 alarms: 2258 released, mean wait 376.50, max wait 2023, max wait priority>=9 2, peak queue 754
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 26.59ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 9.15ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 3.86ms {'items': 2258, 'bucket': 16900}
+  time/ops: heap 43.13ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 14.02ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 6.43ms {'items': 2258, 'bucket': 16900}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 --- Day 7: Evacuation
 input: destination 306, blocked roads 174, crates 501, windows 872 available of 1090, alarms 2258; changes: no loading
 route: no route, trip skipped (no loading)
 windows: 56 by earliest finish, DP value 3612 (50 windows)
+  selected rescue-window IDs (earliest finish): [167, 996, 475, 1062, 634, 137, 125, 670, 282, 186, 412, 896, 934, 470, 834, 564, 29, 464, 472, 360, 55, 274, 944, 17, 710, 234, 835, 91, 701, 645, 426, 752, 182, 900, 692, 721, 126, 592, 409, 559, 160, 270, 330, 39, 290, 200, 937, 7, 686, 407, 61, 535, 281, 1065, 615, 986]
+  selected rescue-window IDs (weighted DP): [167, 996, 475, 1062, 1059, 137, 750, 1075, 412, 662, 934, 470, 834, 564, 29, 1047, 472, 974, 274, 944, 539, 234, 930, 476, 701, 645, 426, 752, 861, 541, 569, 126, 311, 915, 160, 352, 330, 39, 290, 849, 236, 7, 837, 410, 61, 340, 281, 629, 1017, 816]
   baseline: value_greedy value 2193 (gap 1419)
-  time/ops: eff_count 5.30ms {'cmp': 7417, 'move': 8568, 'items': 872}; weighted_dp 6.22ms {'pre_cmp': 7417, 'pre_move': 8568, 'probe': 8592, 'cells': 872}; value_greedy 5.27ms {'cmp': 7439, 'move': 8568, 'items': 872, 'shift': 170, 'probe': 4033}
+  time/ops: eff_count 4.70ms {'cmp': 7417, 'move': 8568, 'items': 872}; weighted_dp 15.49ms {'pre_cmp': 7417, 'pre_move': 8568, 'probe': 8592, 'cells': 872}; value_greedy 20.99ms {'cmp': 7439, 'move': 8568, 'items': 872, 'shift': 170, 'probe': 4033}
 alarms: 2258 released, mean wait 376.50, max wait 2023, max wait priority>=9 2, peak queue 754
   baselines: sorted_list and bucket queue release order identical: True
-  time/ops: heap 26.82ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 9.15ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 3.97ms {'items': 2258, 'bucket': 16900}
+  time/ops: heap 32.68ms {'items': 2258, 'pq': 4516, 'move': 30699, 'cmp': 43848}; sorted_list 11.89ms {'items': 2258, 'shift': 189119, 'probe': 18059, 'cmp': 18059}; buckets 4.79ms {'items': 2258, 'bucket': 16900}
 constraints: windows OK; alarm queues identical OK; alarms OK
 outcome: no route, trip skipped; checks failed 0
 SUMMARY 2-40: tier L, skipped trips 6, checks failed 0

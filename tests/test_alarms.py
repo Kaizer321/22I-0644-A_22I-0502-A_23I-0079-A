@@ -9,6 +9,12 @@ from src.validation import InvalidInput, check_alarms
 IMPLS = [release_heap, release_sorted_list, release_buckets]
 
 
+def test_same_tick_alarm_ids_out_of_order():
+    alarms = [(2, 0, 5), (1, 0, 5), (3, 0, 9)]
+    for release in IMPLS:
+        assert release(alarms) == [(0, 3), (1, 1), (2, 2)]
+
+
 def urgency(a):
     return (-a[2], a[1], a[0])
 

@@ -1,3 +1,5 @@
+from ast import literal_eval
+
 from src import campaign, loader
 from src.alarms import release_buckets, release_heap, release_sorted_list
 
@@ -14,6 +16,20 @@ def test_end_to_end_1_06():
     assert [r["day"] for r in rows] == list(range(1, 8))
     assert sum(r["checks_failed"] for r in rows) == 0 and "FAIL" not in text
     assert rows[6]["load_value_dp"] is None and rows[6]["note"] in ("evacuation, no loading", "no route")
+    for output, row in zip(text.split("--- Day ")[1:], rows, strict=True):
+        selections = {
+            label.strip(): literal_eval(ids)
+            for line in output.splitlines() if line.startswith("  selected ")
+            for label, ids in [line.split(": ", 1)]
+        }
+        roads = selections.get("selected road IDs (HQ to destination)")
+        crates = selections.get("selected crate IDs (knapsack DP)")
+        assert (roads is not None) == row["reachable"]
+        if roads is not None:
+            assert len(roads) == row["route_roads"]
+        assert (crates is not None) == (row["load_value_dp"] is not None)
+        assert len(selections["selected rescue-window IDs (earliest finish)"]) == row["windows_count"]
+        assert "selected rescue-window IDs (weighted DP)" in selections
     # ASSUMPTION: "released at tick 0" cannot hold in 1-06 (a p10 alarm also arrives at tick 0), so: at tick 0 admitted, released right after the p>=9 alarms of tick 0
     al = [(r["alarm_id"], r["tick"], r["priority"]) for r in case("1-06")["incidents"]]
     new = max(a[0] for a in al) + 1
