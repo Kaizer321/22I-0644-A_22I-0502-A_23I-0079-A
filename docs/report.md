@@ -1,11 +1,13 @@
 # LIFELINE — Algorithmic Relief-Command Engine
-## Final Project Report (draft 1)
+## Final Project Report
 
 Design and Analysis of Algorithms · BS Data Science and Artificial Intelligence · FAST-NUCES Islamabad
 Group 69: Muhammad Umar (22I-0644), Haider Ali (22I-0502), Awwab Ahmed (23I-0079) — all Section AI-A
 
 ### Abstract
-This report describes the engine that group 69 built for Operation LIFELINE, a relief command operating after a flood, an earthquake or a cyclone in a river delta. The engine answers four operational decisions with algorithms the group implemented from first principles: which crates to load on the truck (0/1 knapsack dynamic programming against a value-per-kilogram greedy rule), which route to drive on a map whose roads close in waves (Dijkstra's algorithm with the group's own binary heap, against Bellman–Ford and a fewest-roads search), which rescue windows to staff (earliest-finish-first and weighted interval scheduling, against a highest-value-first rule), and which alarm to answer first (a binary heap against a sorted list and a bucket queue). All inputs come from the course master dataset (release master_release_v1, 3,622 cases from 75 groups), from which the group's sample is drawn by its seed 69. The modules are verified against the exhaustive-search optima of 204 small cases, against brute force and Floyd–Warshall on random inputs, against invariants on every output, and by four injected faults that the test suite must detect. Six experiments measure time, operations and memory over at least five geometrically spaced sizes, and a seven-day campaign combines all four modules on five cases, including two deliberately hostile trap cases. All 113 measured points finished within the five-minute limit. The exact methods were affordable at every tested size (the largest knapsack, 6,400 crates, took 18 s), the measured growth rates matched the predicted ones in 18 of 23 checks, and the misses were instructive: Bellman–Ford beat Dijkstra on the synthetic maps, its cost relative to Dijkstra on real maps varied more than 200-fold with the numbering of locations, and the bucket queue beat the binary heap at every size. The campaign ran 35 days with zero failed constraint checks; 12 trips were impossible because closures cut off the destination.
+LIFELINE is a command-line engine for planning disaster relief. It selects truck cargo with 0/1 knapsack dynamic programming, finds routes with Dijkstra’s algorithm and breadth-first search, schedules rescue windows with greedy and weighted interval methods, and dispatches alarms by urgency. Each module is compared with a baseline. The evaluation uses the course master dataset, which contains 3,622 cases from 75 groups, together with seeded synthetic routing instances. The test suite checks results against 204 small-case references, independent solvers, output invariants, and four deliberately injected faults.
+
+All 113 benchmark measurements finished within the five-minute limit. At 6,400 crates, exact knapsack took 18.35 seconds and used 166.7 MB of peak memory beyond the input. Bellman–Ford sometimes beat Dijkstra on synthetic maps, but took up to 80.8 times as long on real maps. The bucket queue was fastest at every tested alarm-stream size. Across five seven-day campaigns, all constraint checks passed and 12 of 35 trips were skipped because road closures cut off the destination. The results support exact cargo selection within the tested capacity range, Dijkstra for routing, and bucket-based dispatch for bounded integer priorities.
 
 ### 1. Introduction
 The LIFELINE project asks a three-person team to treat a relief operation as a sequence of computational problems. Every day the command must decide what to load, where to drive, which rescue windows to staff and in which order to answer alarms, while roads close in waves and the value of supplies changes with events such as a storm or a medical emergency. The project prescribes no algorithms: each group recognises the problem behind each decision, selects and justifies algorithms, implements them, and evaluates them on shared data.
@@ -68,7 +70,7 @@ while heap: (d, u) = pop; if d > dist[u]: continue
 #### 3.4 Module D — Emergency queue
 *Problem.* Given m alarms (tick, priority 1–10, id) sorted by tick, release one alarm per tick, always the most urgent waiting alarm (priority descending, then tick ascending, then id ascending), until all are released.
 *Primary.* The group's binary heap keyed (−priority, tick, id): O(log q) per operation, O(m log m) in total.
-*Baselines.* A list kept sorted so the most urgent alarm is last (binary search for the position, `list.insert` shifts the tail): O(q) shifts per insertion. A bucket queue of ten FIFO queues, one per priority; input order already breaks ties within a priority, so each operation is O(10).
+*Baselines.* A list kept sorted so the most urgent alarm is last (binary search for the position, `list.insert` shifts the tail): O(q) shifts per insertion. A bucket queue of ten FIFO queues, one per priority; the implementation restores ID order within each tick when needed. After preprocessing, each queue operation is O(10).
 *Why.* At 1.2–1.8 arrivals per tick against one release per tick the backlog grows to thousands. With only ten priority levels the bucket queue is a strong competitor.
 
 ### 4. System design and implementation
@@ -83,7 +85,7 @@ The code is a Python 3.11 package `src/` with narrow interfaces. `loader.py` ver
 Infeasible situations are handled explicitly: an unreachable destination skips the trip (no route, no loading) and is reported as "no route"; a capacity below every crate weight gives an empty load; a tick with no waiting alarm releases nothing.
 
 ### 5. Testing
-The test suite (`python -m pytest tests -q`, 49 tests) has five layers.
+The test suite (`python -m pytest tests -q`, 53 tests) has five layers.
 
 1. **Unit and boundary tests** per module: empty inputs, capacity 0, crates heavier than the truck, touching windows, identical windows, a destination equal to the source, unreachable locations, all alarms at tick 0, and every tie rule.
 2. **Reference tests.** The knapsack DP equals `cargo_opt`, and earliest-finish-first and the interval DP equal `window_count_opt` and `window_value_opt`, on all 204 tier-S cases of the sample (these optima were computed by exhaustive search). Brute force over all subsets checks the knapsack and scheduling modules on 300 random small inputs each; Dijkstra, Bellman–Ford and Floyd–Warshall agree on 200 random maps; the three alarm queues and an independent simulator give identical orders on 300 random streams and on 25 master cases.
@@ -93,10 +95,10 @@ The test suite (`python -m pytest tests -q`, 49 tests) has five layers.
 
 A first version of the blocked-road fault called the patched function itself and crashed with infinite recursion, so all 8 route tests "failed" for the wrong reason; it was corrected so that each fault is detected by a genuine assertion. Only one test detects the blocked-road fault, which marks that area for more tests.
 
-The tie-rule fault was initially **not** detected: in every original alarm test the ids increased with the tick, so a key that skips the tick behaved identically. A test with ids out of tick order now detects it. This is the main lesson of the fault-injection exercise: tests must vary the attributes that a tie rule distinguishes. All 49 tests pass (`results/fault_injection.txt` records the four fault runs).
+The tie-rule fault was initially **not** detected: in every original alarm test the ids increased with the tick, so a key that skips the tick behaved identically. A test with ids out of tick order now detects it. This is the main lesson of the fault-injection exercise: tests must vary the attributes that a tie rule distinguishes. All 53 tests passed with the master dataset (`results/fault_injection.txt` records the four fault runs).
 
 ### 6. Experiments and analysis
-**Method.** Each point runs in a fresh process: one counted run discarded as a warm-up, then five timed runs with `time.perf_counter` (single thread, data loading excluded); the median and interquartile range are reported. Memory is the peak traced by `tracemalloc` in a separate run, beyond the input. A run longer than five minutes is recorded as DNF. Growth is fitted by least squares on log–log axes; Table 2 gives the slope with its 95% confidence interval, R² and the error of predicting the largest size from the others. Hardware: AMD Ryzen 7 7445HS, 15.2 GB RAM, Windows 11, Python 3.11.6. Predictions were committed to `prediction_log.md` before the run.
+**Method.** Each point runs in a fresh process: one counted run discarded as a warm-up, then five timed runs with `time.perf_counter` (single thread, data loading excluded); the median and interquartile range are reported. Memory is the peak traced by `tracemalloc` in a separate run, beyond the input. A run longer than five minutes is recorded as DNF. Growth is fitted by least squares on log–log axes; Table 2 gives the slope with its 95% confidence interval, R² and the error of predicting the largest size from the others. Hardware: AMD Ryzen 7 7445HS, 15.2 GB RAM, Windows 11, Python 3.11.6. The formal run began on 24 November 2026 at 01:29:36 local time, as recorded in `results/environment.txt`. The prediction log discloses the preliminary smoke timings.
 
 *Table 2 — Fitted growth (log–log least squares; time unless stated).*
 
@@ -156,19 +158,19 @@ The campaign plays seven days on five cases from the sample: 1-06 (tier S), 1-26
 | 2-48 | X | 5 / 7 | 19,164 vs 19,159 (Day 1) | Days 1 and 7: 64 vs 12; Day 4: 68 vs 22 | 3,769 vs 2,044 | 378 / 2,041 | 0 |
 | 4-47 | X | 6 / 7 | 198 vs 113 (Days 1–4, 6); 198 vs 139 (Day 5) | equal | 2,019 vs 415 | 371 / 2,968 | 0 |
 
-Every constraint check passed on all 35 days. Twelve trips were skipped because closures cut off the destination; the corridor case 2-40 could reach its destination only on Day 1. **Deliberately difficult scenarios.** On 4-47 (trap 47) the obvious rule of loading the best value per kilogram first takes a light lure crate and one of two heavy crates, and then nothing fits: 113 value units instead of 198 (57%); the DP finds the pair. Day 5's tripled medicine values weaken the trap (70%), which shows that the trap is defined on base values. On 2-48 (trap 48) the route with the fewest roads passes a penalty-6 junction and costs 64 against 12 for the cheapest route (5.3 times). The remaining limitation is that exactness costs memory: the DP needs n·(W+1) bytes, and Dijkstra is only correct for non-negative costs. Alarm waits are long on the large cases (means of 371–378 ticks) because arrivals exceed the one-release-per-tick capacity; priority 9 and 10 alarms waited at most 3 ticks.
+The daily logs record the selected roads in travel order, the selected crates on loading days, and the rescue-window selections for both objectives. Every constraint check passed on all 35 days. Twelve trips were skipped because closures cut off the destination; the corridor case 2-40 could reach its destination only on Day 1. **Deliberately difficult scenarios.** On 4-47 (trap 47) the obvious rule of loading the best value per kilogram first takes a light lure crate and one of two heavy crates, and then nothing fits: 113 value units instead of 198 (57%); the DP finds the pair. Day 5's tripled medicine values weaken the trap (70%), which shows that the trap is defined on base values. On 2-48 (trap 48) the route with the fewest roads passes a penalty-6 junction and costs 64 against 12 for the cheapest route (5.3 times). The remaining limitation is that exactness costs memory: the DP needs n·(W+1) bytes, and Dijkstra is only correct for non-negative costs. Alarm waits are long on the large cases (means of 371–378 ticks) because arrivals exceed the one-release-per-tick capacity; priority 9 and 10 alarms waited at most 3 ticks.
 
 ### 8. Screenshots of outputs and interface
 ![Campaign console output](figures/screen_campaign.png)
 *Figure 8 — `python -m src.main campaign 1-06`: Day 1 of the campaign (input, decisions, baseline comparison, constraints checked).*
 
 ![Test run](figures/screen_tests.png)
-*Figure 9 — `python -m pytest tests -q`: the full test suite.*
+*Figure 9 — `python -m pytest tests -q`: the original 49-test benchmark round. The updated suite contains 53 tests.*
 
 ![Experiment runner](figures/screen_experiments.png)
 *Figure 10 — `python -m src.experiments`: progress lines of the experiment runner (last measured points).*
 
-The engine has a command-line interface only; no graphical interface was built in this draft.
+The engine is operated through its command-line interface.
 
 ### 9. Recommendation
 Addressed to the lead designer of the relief command (the README gives every assumption and measurement in full).
@@ -176,7 +178,7 @@ Addressed to the lead designer of the relief command (the README gives every ass
 - **Inventory: ship the knapsack DP.** It is exact and took 18 s at 6,400 crates (A1). The greedy is within 0.04% on random loads but loaded 57% of the best value on trap 47. It depends on n·W staying moderate; when the n·(W+1)-byte table no longer fits in memory or the time exceeds the planning window, switch to the greedy.
 - **Routes: ship Dijkstra.** It took 0.34 s at 32,000 locations (B1), and its cost does not depend on how locations are numbered, while Bellman–Ford ranged from 0.3× to 80.8× on real maps (B2). It depends on non-negative step costs; the validation layer's minimum-cost check tells the designer when that breaks.
 - **Scheduling: ship earliest-finish-first and the weighted interval DP.** Exact, 0.16 s at 32,000 windows (C1); the value greedy reached about 70%. It assumes one crew; the number of crews per day is the measurement that would invalidate it.
-- **Alarms: ship the bucket queue.** Fastest at every size (0.059 s at 64,000, D1) with identical output. It depends on ten integer priority levels and in-order arrivals; the number of distinct priorities and an order check of the stream tell when to fall back to the binary heap.
+- **Alarms: ship the bucket queue.** Fastest at every size (0.059 s at 64,000, D1) with identical output. It depends on ten integer priority levels and nondecreasing arrival ticks. The implementation restores ID order within a tick when needed. If preprocessing erodes the timing advantage, compare it against the heap on representative streams.
 
 *Ranked failure modes:* (1) destinations cut off by closures (12 of 35 trips skipped); (2) the alarm backlog when arrivals exceed one per tick (mean waits of about 375 ticks on the large cases); (3) exact methods that stop scaling (DP memory n·(W+1) bytes; Bellman–Ford on badly numbered maps).
 
@@ -188,13 +190,13 @@ Addressed to the lead designer of the relief command (the README gives every ass
 *What the group learned.* Operation counts and asymptotic bounds predicted growth rates well (most fitted slopes fell inside the predicted intervals), but they did not predict which method is fastest at a given size: in Python the cost of an operation varies by an order of magnitude between a C-level list shift and an interpreted heap sift. The instance generator itself can bias an experiment (B1), and the shape of the input — how locations are numbered, how many priority levels exist — can matter more than its size. Fault injection showed that a test suite can pass while missing a tie rule unless the tests vary exactly the attribute that the rule decides.
 
 ### 11. Work division
-*Table — Work division across modules, test suites, experimental evaluations, and reporting.*
+*Table 4 — Work division across modules, testing, experiments, and reporting.*
 
 | Member | Modules | Tests | Experiments | Report sections |
 |---|---|---|---|---|
-| Muhammad Umar (22I-0644, AI-A) | Module A (Relief Inventory: 0/1 knapsack DP and greedy value-ratio in `src/inventory.py`), Module D (Emergency Queue: priority release loop, 10-bucket FIFO queue and sorted list in `src/alarms.py`), Phase 1 generator (`generator/`) | Unit tests for knapsack DP (`tests/test_inventory.py`), unit tests for alarm dispatch priority models and tie-rules (`tests/test_alarms.py`) | Experiments A1 and A2 (Knapsack scaling vs capacity and item count), Experiment D1 (Priority heap vs bucket queue vs sorted list) | Section 3.1 (Module A — Relief Inventory), Section 3.4 (Module D — Emergency Queue), Section 6 (Experiments A1, A2 and D1) |
-| Haider Ali (22I-0502, AI-A) | Pre-execution validation layer (`src/validation.py`), Module C (Rescue Scheduling: Earliest-Finish-First greedy and Weighted Interval Scheduling DP with binary search in `src/scheduling.py`) | Rescue window interval scheduling unit tests (`tests/test_scheduling.py`), algorithmic fault mutants (`tests/faults.py`), dynamic fault injection verification test harness (`tests/test_fault_injection.py`), `tests/conftest.py` dynamic monkey-patching harness | Statistical analysis regression engine (OLS log-log fitting with Student's t 95% confidence intervals, R² goodness-of-fit in `src/analysis.py`), scaling plots generation (`results/plots/`), Experiment C1 (Interval scheduling scaling) | Section 2 (Data), Section 3.3 (Module C — Rescue Scheduling), Section 5 (Verification and Fault Injection), Section 6 (Experiment C1 and Statistical Methodology), Section 8 (Program Output), Section 11 (Work Division), Report build pipeline (`docs/build_report.py`) |
-| Awwab Ahmed (23I-0079, AI-A) | Algorithmic foundations (binary min-heap `src/heap.py`, instrumented stable merge sort `src/sorting.py`), streaming master dataset loader and checksum verification (`src/loader.py`), Module B (Route Planning: Dijkstra with min-heap, Bellman-Ford with early termination, BFS fewest roads in `src/routes.py`), 7-day disaster relief campaign simulation engine (`src/campaign.py`), unified CLI driver (`src/main.py`) | Foundation unit tests for heap invariant, empty pops and merge sort stability (`tests/test_foundation.py`), network routing and shortest path invariant tests (`tests/test_routes.py`), 7-day campaign multi-scenario integration tests (`tests/test_campaign.py`), multiprocessing benchmark runner tests (`tests/test_experiments.py`) | Multiprocessing benchmark execution framework with timeout isolation and memory tracing (`src/experiments.py`), Prediction log hypothesis pre-registration and retrospective discrepancy analysis (`prediction_log.md`), Experiments B1 and B2 (Shortest path scaling on synthetic and real maps) | Abstract, Section 1 (Introduction), Section 3.2 (Module B — Route Planning), Section 4 (Architecture), Section 6 (Experiments B1 and B2), Section 7 (The 7-Day Campaign), Section 9 (Recommendation to Lead Designer), Section 10 (Limitations and Conclusions) |
+| Muhammad Umar (22I-0644) | Phase 1 generator, inventory (A), alarm dispatch (D) | Cargo and queue unit tests, including urgency ties | A1, A2, D1 | §§3.1, 3.4, 6 (A and D) |
+| Haider Ali (22I-0502) | Validation, rescue scheduling (C) | Scheduling tests and fault-injection harness | C1, regression fits, and scaling plots | §§2, 3.3, 5, 6 (C and methods), 8, 11, report build |
+| Awwab Ahmed (23I-0079) | Heap, merge sort, master loader, routing (B), campaign, CLI | Foundations, routing, campaign, and benchmark tests | B1, B2, benchmark runner, and prediction log | Abstract, §§1, 3.2, 4, 6 (B), 7, 9, 10 |
 
 *AI assistance.* AI tools were used to draft code, tests and this report; every decision and its reason is recorded in a separate decision log kept outside the repository, as the course's AI policy requires.
 
@@ -206,3 +208,4 @@ Addressed to the lead designer of the relief command (the README gives every ass
 5. H. Kellerer, U. Pferschy and D. Pisinger. *Knapsack Problems*. Springer, 2004.
 6. Course staff. LIFELINE master dataset, release master_release_v1, README and CHECKSUMS, 12 November 2026.
 7. Python Software Foundation. Python 3.11 documentation: `time.perf_counter`, `tracemalloc`, `multiprocessing`, `statistics`.
+8. FAST-NUCES Islamabad. [Campus website and cover logo](https://isb.nu.edu.pk/NEW/this.html).
