@@ -40,4 +40,38 @@ Rules (rulebook 6.3, R-05): each entry is written and **committed before** its e
 - **Prediction:** 0 failed constraint checks; on `4-47` (trap 47) the greedy load is **≤ 60%** of the DP load on every loading day where the trap crates are reachable; on `2-48` (trap 48) the fewest-roads route costs **≥ 1.5×** Dijkstra's on at least one day; at least one skipped trip on Day 6 or 7 across the five cases.
 
 ## After Round 1 — what we got wrong and why
-(to be filled after the run, with the numbers from `results/results.csv`)
+Run: 2026-11-24, after commit 2b43a69 (this log). 113 points, all `OK` (no DNF, no FAIL). Numbers from `results/results.csv` and `results/fits.csv`; solution-quality ratios from `results/quality_check.txt`. ✔ = within the stated tolerance, ✘ = outside.
+
+| Exp | Prediction | Measured | |
+|---|---|---|---|
+| A1 | DP time slope 2.0 ± 0.15 | 2.075 (95% CI 1.94–2.21), R² 0.997 | ✔ |
+| A1 | DP at n = 6,400: 23 s ± 30% | 18.35 s (IQR 10.53 s) | ✔ |
+| A1 | DP memory at n = 6,400: 170 MB ± 20% | 166.7 MB | ✔ |
+| A1 | greedy slope 1.15 ± 0.15; 0.15 s ± 50% at n = 6,400 | 1.14; 0.178 s | ✔ |
+| A1 | greedy ≥ 97% of DP value | 99.96–100% | ✔ (very conservative) |
+| A2 | time slope vs W 1.0 ± 0.1 | 1.146 (CI 0.97–1.32); ops slope 1.002 | ✘ point estimate |
+| A2 | 13 s ± 35% at W = 32,000 | 19.65 s | ✘ |
+| A2 | memory 128 MB ± 15% | 132.4 MB | ✔ |
+| B1 | Dijkstra slope 1.1 ± 0.1; 0.55 s ± 40% at V = 32,000 | 1.20; 0.343 s | ✔ (both at the edge) |
+| B1 | Bellman–Ford rounds 10 ± 2 at V = 32,000; slope 1.15 ± 0.15 | 11; 1.18 | ✔ |
+| B1 | **Bellman–Ford / Dijkstra time ratio 2.5 (1.2–5)** | **0.81 — Bellman–Ford was faster** | ✘ |
+| B2 | corridor (study 5) maps ratio ≥ 20; generic maps < 6 | study-5 map 17-40: 0.3 (2 rounds); generic maps up to 80.8 (13-43, 525 rounds), 15.4, 8.8 | ✘ |
+| C1 | EFF / DP time slopes 1.1 ± 0.1 | 1.146 / 1.104 | ✔ |
+| C1 | value-greedy shift slope 1.8 ± 0.3, time slope 1.2 ± 0.15 | 1.685 / 1.197 | ✔ |
+| C1 | value greedy 75% ± 10% of DP value | 69.5–70.6% | ✔ |
+| D1 | heap slope 1.1 ± 0.1, buckets 1.0 ± 0.1 | 1.178, 1.04 (R² 0.979) | ✔ |
+| D1 | sorted-list shift slope 1.9 ± 0.2, time slope 1.3 ± 0.2 | ops 1.918, time 1.249 | ✔ |
+| D1 | sorted list faster than heap at every size; heap/list 2.5 ± 1.0 at m = 16,000 | yes at all 8 sizes; 2.32 | ✔ |
+| D1 | buckets fastest at every size | yes at all 8 sizes | ✔ |
+| D1 | crossover heap < list near m ≈ 400,000 | not testable in range; the ratio fell from 2.73 (m = 1,000) to 1.83 (m = 64,000) | — |
+| Campaign (not pre-registered) | 0 failed checks; ≥ 1 skipped trip; 2-48 fewest-roads ≥ 1.5× on some day | 0; 12 skipped trips; 5.33× on Days 1 and 7 | (✔) |
+| Campaign (not pre-registered) | 4-47 greedy ≤ 60% of DP on every loading day | 0.571–0.576 on Days 1–4 and 6, **0.702 on Day 5** | (✘) |
+
+**What we got wrong and why.**
+1. **Bellman–Ford beat Dijkstra on the synthetic maps (B1).** We counted operations correctly (11 rounds, as predicted) but misjudged their price: Bellman–Ford's 3.5 M edge relaxations are plain loop steps, while Dijkstra's 2.3 M counted operations include Python-level heap sifts with tuple keys. More importantly, our own generator `synthetic_network` attaches node i to a parent with a smaller id, and Bellman–Ford scans nodes in ascending id order, so most tree distances settle in the first pass. B1 therefore measures a map family that is unusually kind to Bellman–Ford — a bias in our instance generator that we did not see before the run.
+2. **B2 depends on label order, not on the case study.** We expected study-5 corridors to be the hard maps. Map 17-40 (a corridor whose ids follow the path) converged in 2 rounds; map 13-43, whose ids are unrelated to depth, needed 525 rounds and was 80.8 times slower than Dijkstra. The real driver is how many rounds it takes for distances to propagate in scan order, which is at most the route depth but can be far less when ids follow the routes. Dijkstra's cost does not depend on labels at all, which is why it is the safe choice.
+3. **A2's time grew faster than its operations.** Cells grew exactly linearly in W (ops slope 1.002), but time grew with slope 1.15 and the per-cell cost rose from about 0.08 µs (W = 1,000) to 0.154 µs (W = 32,000). The keep-rows grow to 132 MB, so allocation and cache effects, not the algorithm, made the larger tables slower. The same effect explains the large spread of A1 at n = 1,600 and 6,400 (IQR/median 0.43 and 0.57).
+4. **Trap 47 on Day 5.** Tripling medicine values changes which crates look best, so the greedy recovered to 70% of the optimum on that day. The trap is defined on base values; day multipliers can weaken it.
+5. **D1 crossover.** We cannot test it in range. A simple extrapolation of the two fits would put the crossover above 10⁸ alarms, but that is unreliable: the sorted list's time slope must rise toward 2 once shifts dominate, so the true crossover is lower than the naive fit suggests. We leave it as an open prediction.
+
+**Next round (if any):** shuffle node ids in `synthetic_network` (or add a shuffled family) and rerun B1, so the Bellman–Ford comparison is not flattered by our generator.
