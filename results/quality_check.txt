@@ -1,0 +1,6 @@
+﻿A1 n=400 greedy/dp=0.9996
+A1 n=1600 greedy/dp=0.9998
+A1 n=6400 greedy/dp=1.0000
+C1 n=1000 value_greedy/dp=0.7059
+C1 n=8000 value_greedy/dp=0.7043
+C1 n=32000 value_greedy/dp=0.6949

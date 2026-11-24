@@ -1,0 +1,29 @@
+Fault injection: each faulty copy is patched in (tests/conftest.py) and must make the suite fail.
+
+[touching] eff_count / weighted_dp reject touching windows (< instead of <=)
+  test files: tests/test_scheduling.py
+  return code: 1
+  failing tests (3):
+    tests/test_scheduling.py::test_random_vs_brute_force
+    tests/test_scheduling.py::test_reference_tier_s
+    tests/test_scheduling.py::test_touching_and_overlap
+
+[tie_rule] release_heap key (-priority, alarm_id) ignores tick
+  test files: tests/test_alarms.py tests/test_campaign.py::test_tie_rule_uses_tick_before_id
+  return code: 1
+  failing tests (1):
+    tests/test_campaign.py::test_tie_rule_uses_tick_before_id
+
+[blocked] build_adj ignores the blocked roads
+  test files: tests/test_routes.py
+  return code: 1
+  failing tests (1):
+    tests/test_routes.py::test_blocked_and_self
+
+[unbounded] knapsack_dp reuses items (capacity loop upward)
+  test files: tests/test_inventory.py
+  return code: 1
+  failing tests (3):
+    tests/test_inventory.py::test_greedy_suboptimal
+    tests/test_inventory.py::test_random_vs_brute
+    tests/test_inventory.py::test_reference_tier_s

@@ -1,0 +1,107 @@
+=== case 1-26 (tier M), capacity 232, targets [87, 27, 55]
+--- Day 1: Normal
+input: destination 87, blocked roads 0, crates 74, windows 138 available of 172, alarms 687; changes: none
+route: 4 roads, cost 47
+  baseline: bellman_ford cost 47; fewest-roads route 4 roads, cost 47 (gap 0)
+  time/ops: dijkstra 0.70ms {'pq': 268, 'move': 794, 'nodes': 122, 'edges': 304, 'relax': 304, 'cmp': 1144}; bellman_ford 0.57ms {'rounds': 4, 'edges': 1216, 'relax': 1216}; bfs 0.13ms {'nodes': 122, 'edges': 304}
+load: 32 crates, value 2258, weight 232/232
+  baseline: ratio_greedy value 2257 (gap 1)
+  time/ops: knapsack_dp 3.65ms {'items': 74, 'cells': 16428}; ratio_greedy 1.88ms {'cmp': 372, 'move': 464, 'items': 74}
+windows: 32 by earliest finish, DP value 2140 (31 windows)
+  baseline: value_greedy value 1839 (gap 301)
+  time/ops: eff_count 0.47ms {'cmp': 808, 'move': 986, 'items': 138}; weighted_dp 0.72ms {'pre_cmp': 808, 'pre_move': 986, 'probe': 1000, 'cells': 138}; value_greedy 0.64ms {'cmp': 806, 'move': 986, 'items': 138, 'shift': 173, 'probe': 583}
+alarms: 687 released, mean wait 103.13, max wait 624, max wait priority>=9 3, peak queue 199
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 6.36ms {'items': 687, 'pq': 1374, 'move': 7252, 'cmp': 10003}; sorted_list 2.27ms {'items': 687, 'shift': 15043, 'probe': 4193, 'cmp': 4193}; buckets 1.42ms {'items': 687, 'bucket': 5171}
+constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+--- Day 2: Storm
+input: destination 27, blocked roads 37, crates 74, windows 138 available of 172, alarms 688; changes: minutes x1.5 (ceil), tool crates x2, alarm p9 at tick 0
+route: 7 roads, cost 216
+  baseline: bellman_ford cost 216; fewest-roads route 6 roads, cost 368 (gap 152)
+  time/ops: dijkstra 0.49ms {'pq': 208, 'move': 536, 'nodes': 101, 'edges': 222, 'relax': 222, 'cmp': 742}; bellman_ford 0.32ms {'rounds': 4, 'edges': 831, 'relax': 831}; bfs 0.07ms {'nodes': 101, 'edges': 222}
+load: 30 crates, value 2969, weight 232/232
+  baseline: ratio_greedy value 2959 (gap 10)
+  time/ops: knapsack_dp 3.47ms {'items': 74, 'cells': 16428}; ratio_greedy 2.03ms {'cmp': 371, 'move': 464, 'items': 74}
+windows: 35 by earliest finish, DP value 2223 (32 windows)
+  baseline: value_greedy value 1745 (gap 478)
+  time/ops: eff_count 0.47ms {'cmp': 811, 'move': 986, 'items': 138}; weighted_dp 0.71ms {'pre_cmp': 811, 'pre_move': 986, 'probe': 997, 'cells': 138}; value_greedy 0.65ms {'cmp': 810, 'move': 986, 'items': 138, 'shift': 150, 'probe': 573}
+alarms: 688 released, mean wait 103.98, max wait 625, max wait priority>=9 3, peak queue 200
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 5.98ms {'items': 688, 'pq': 1376, 'move': 7273, 'cmp': 10029}; sorted_list 2.16ms {'items': 688, 'shift': 15187, 'probe': 4200, 'cmp': 4200}; buckets 1.15ms {'items': 688, 'bucket': 5175}
+constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+--- Day 3: Food shortage
+input: destination 55, blocked roads 1, crates 74, windows 137 available of 172, alarms 687; changes: food crates x2
+route: 3 roads, cost 25
+  baseline: bellman_ford cost 25; fewest-roads route 2 roads, cost 72 (gap 47)
+  time/ops: dijkstra 1.09ms {'pq': 268, 'move': 794, 'nodes': 122, 'edges': 302, 'relax': 302, 'cmp': 1144}; bellman_ford 0.66ms {'rounds': 4, 'edges': 1208, 'relax': 1208}; bfs 0.14ms {'nodes': 122, 'edges': 302}
+load: 33 crates, value 2612, weight 232/232
+  baseline: ratio_greedy value 2595 (gap 17)
+  time/ops: knapsack_dp 3.59ms {'items': 74, 'cells': 16428}; ratio_greedy 1.91ms {'cmp': 372, 'move': 464, 'items': 74}
+windows: 34 by earliest finish, DP value 2122 (31 windows)
+  baseline: value_greedy value 1483 (gap 639)
+  time/ops: eff_count 0.47ms {'cmp': 809, 'move': 977, 'items': 137}; weighted_dp 0.73ms {'pre_cmp': 809, 'pre_move': 977, 'probe': 981, 'cells': 137}; value_greedy 0.62ms {'cmp': 801, 'move': 977, 'items': 137, 'shift': 92, 'probe': 539}
+alarms: 687 released, mean wait 103.13, max wait 624, max wait priority>=9 3, peak queue 199
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 5.88ms {'items': 687, 'pq': 1374, 'move': 7252, 'cmp': 10003}; sorted_list 3.23ms {'items': 687, 'shift': 15043, 'probe': 4193, 'cmp': 4193}; buckets 1.93ms {'items': 687, 'bucket': 5171}
+constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+--- Day 4: Dangerous area
+input: destination 87, blocked roads 8, crates 74, windows 137 available of 172, alarms 687; changes: penalties >= 2 doubled
+route: 4 roads, cost 59
+  baseline: bellman_ford cost 59; fewest-roads route 4 roads, cost 59 (gap 0)
+  time/ops: dijkstra 0.70ms {'pq': 266, 'move': 778, 'nodes': 120, 'edges': 286, 'relax': 286, 'cmp': 1113}; bellman_ford 0.42ms {'rounds': 4, 'edges': 1144, 'relax': 1144}; bfs 0.11ms {'nodes': 120, 'edges': 286}
+load: 32 crates, value 2258, weight 232/232
+  baseline: ratio_greedy value 2257 (gap 1)
+  time/ops: knapsack_dp 2.97ms {'items': 74, 'cells': 16428}; ratio_greedy 1.69ms {'cmp': 372, 'move': 464, 'items': 74}
+windows: 35 by earliest finish, DP value 2099 (33 windows)
+  baseline: value_greedy value 1648 (gap 451)
+  time/ops: eff_count 0.47ms {'cmp': 804, 'move': 977, 'items': 137}; weighted_dp 0.69ms {'pre_cmp': 804, 'pre_move': 977, 'probe': 999, 'cells': 137}; value_greedy 0.75ms {'cmp': 798, 'move': 977, 'items': 137, 'shift': 140, 'probe': 568}
+alarms: 687 released, mean wait 103.13, max wait 624, max wait priority>=9 3, peak queue 199
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 5.97ms {'items': 687, 'pq': 1374, 'move': 7252, 'cmp': 10003}; sorted_list 2.69ms {'items': 687, 'shift': 15043, 'probe': 4193, 'cmp': 4193}; buckets 1.16ms {'items': 687, 'bucket': 5171}
+constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+--- Day 5: Medical emergency
+input: destination 27, blocked roads 37, crates 74, windows 138 available of 172, alarms 688; changes: medicine crates x3, alarm p10 at tick 0
+route: 7 roads, cost 151
+  baseline: bellman_ford cost 151; fewest-roads route 6 roads, cost 249 (gap 98)
+  time/ops: dijkstra 0.50ms {'pq': 210, 'move': 546, 'nodes': 101, 'edges': 222, 'relax': 222, 'cmp': 755}; bellman_ford 0.33ms {'rounds': 4, 'edges': 831, 'relax': 831}; bfs 0.07ms {'nodes': 101, 'edges': 222}
+load: 30 crates, value 3142, weight 232/232
+  baseline: ratio_greedy value 3139 (gap 3)
+  time/ops: knapsack_dp 3.15ms {'items': 74, 'cells': 16428}; ratio_greedy 1.75ms {'cmp': 375, 'move': 464, 'items': 74}
+windows: 33 by earliest finish, DP value 1933 (29 windows)
+  baseline: value_greedy value 1593 (gap 340)
+  time/ops: eff_count 0.46ms {'cmp': 806, 'move': 986, 'items': 138}; weighted_dp 0.70ms {'pre_cmp': 806, 'pre_move': 986, 'probe': 988, 'cells': 138}; value_greedy 0.65ms {'cmp': 811, 'move': 986, 'items': 138, 'shift': 128, 'probe': 551}
+alarms: 688 released, mean wait 103.98, max wait 625, max wait priority>=9 3, peak queue 200
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 5.94ms {'items': 688, 'pq': 1376, 'move': 7273, 'cmp': 10029}; sorted_list 2.17ms {'items': 688, 'shift': 15187, 'probe': 4200, 'cmp': 4200}; buckets 1.16ms {'items': 688, 'bucket': 5174}
+constraints: route OK; bellman_ford == dijkstra OK; load OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+--- Day 6: Flood
+input: destination 55, blocked roads 46, crates 74, windows 138 available of 172, alarms 687; changes: none
+route: no route, trip skipped (no loading)
+windows: 32 by earliest finish, DP value 2140 (31 windows)
+  baseline: value_greedy value 1839 (gap 301)
+  time/ops: eff_count 0.46ms {'cmp': 808, 'move': 986, 'items': 138}; weighted_dp 0.74ms {'pre_cmp': 808, 'pre_move': 986, 'probe': 1000, 'cells': 138}; value_greedy 0.67ms {'cmp': 806, 'move': 986, 'items': 138, 'shift': 173, 'probe': 583}
+alarms: 687 released, mean wait 103.13, max wait 624, max wait priority>=9 3, peak queue 199
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 5.94ms {'items': 687, 'pq': 1374, 'move': 7252, 'cmp': 10003}; sorted_list 2.28ms {'items': 687, 'shift': 15043, 'probe': 4193, 'cmp': 4193}; buckets 1.17ms {'items': 687, 'bucket': 5171}
+constraints: windows OK; alarm queues identical OK; alarms OK
+outcome: no route, trip skipped; checks failed 0
+--- Day 7: Evacuation
+input: destination 87, blocked roads 46, crates 74, windows 138 available of 172, alarms 687; changes: no loading
+route: 6 roads, cost 93
+  baseline: bellman_ford cost 93; fewest-roads route 6 roads, cost 93 (gap 0)
+  time/ops: dijkstra 0.47ms {'pq': 194, 'move': 494, 'nodes': 95, 'edges': 200, 'relax': 200, 'cmp': 678}; bellman_ford 0.32ms {'rounds': 4, 'edges': 707, 'relax': 707}; bfs 0.07ms {'nodes': 95, 'edges': 200}
+load: none (evacuation)
+windows: 35 by earliest finish, DP value 2223 (32 windows)
+  baseline: value_greedy value 1745 (gap 478)
+  time/ops: eff_count 0.48ms {'cmp': 811, 'move': 986, 'items': 138}; weighted_dp 0.73ms {'pre_cmp': 811, 'pre_move': 986, 'probe': 997, 'cells': 138}; value_greedy 0.65ms {'cmp': 810, 'move': 986, 'items': 138, 'shift': 150, 'probe': 573}
+alarms: 687 released, mean wait 103.13, max wait 624, max wait priority>=9 3, peak queue 199
+  baselines: sorted_list and bucket queue release order identical: True
+  time/ops: heap 6.24ms {'items': 687, 'pq': 1374, 'move': 7252, 'cmp': 10003}; sorted_list 2.25ms {'items': 687, 'shift': 15043, 'probe': 4193, 'cmp': 4193}; buckets 1.19ms {'items': 687, 'bucket': 5171}
+constraints: route OK; bellman_ford == dijkstra OK; windows OK; alarm queues identical OK; alarms OK
+outcome: trip made; checks failed 0
+SUMMARY 1-26: tier M, skipped trips 1, checks failed 0
